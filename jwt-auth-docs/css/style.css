@@ -428,6 +428,46 @@ body {
   line-height: 1.7;
 }
 
+/* Table Styles */
+.docs-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+  background: var(--bg-surface);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.docs-content th, .docs-content td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  text-align: left;
+}
+
+.docs-content th {
+  background: var(--bg-body);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.docs-content tr:nth-child(even) {
+  background: var(--border-light);
+}
+
+/* Blockquote */
+.docs-content blockquote {
+  margin: 1.25rem 0;
+  padding: 0.85rem 1.25rem;
+  border-left: 4px solid var(--accent-primary);
+  background: var(--accent-light);
+  color: var(--text-primary);
+  font-style: italic;
+  font-size: 1.05rem;
+  border-radius: 0 8px 8px 0;
+}
+
 /* Inline Code */
 :not(pre) > code {
   font-family: 'JetBrains Mono', monospace;

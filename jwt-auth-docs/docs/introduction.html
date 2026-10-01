@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>পরিচিতি ও ওভারভিউ | JWT Auth Docs</title>
+  <title>JWT Authentication & Authorization — সম্পূর্ণ গাইড | JWT Auth Docs</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -53,158 +53,816 @@
     <!-- Left Sidebar -->
     <aside class="docs-sidebar">
       <div class="sidebar-group">
-        <div class="group-title">শুরুর কথা (Getting Started)</div>
+        <div class="group-title">ফাউন্ডেশন (Foundations)</div>
         <ul class="sidebar-nav">
-          <li class="sidebar-item">
-            <a href="introduction.html" class="sidebar-link active">
-              <span>১. পরিচিতি ও ওভারভিউ</span>
-              <span class="sidebar-tag">Intro</span>
-            </a>
-          </li>
+          <li class="sidebar-item"><a href="#section-1" class="sidebar-link"><span>১. Authentication কী?</span></a></li>
+          <li class="sidebar-item"><a href="#section-2" class="sidebar-link"><span>২. Authorization কী?</span></a></li>
+          <li class="sidebar-item"><a href="#section-3" class="sidebar-link"><span>৩. AuthN vs AuthZ পার্থক্য</span></a></li>
         </ul>
       </div>
 
       <div class="sidebar-group">
-        <div class="group-title">কোর কনসেপ্টস (Core Concepts)</div>
+        <div class="group-title">JWT ও স্ট্রাকচার (JWT & Structure)</div>
         <ul class="sidebar-nav">
-          <li class="sidebar-item">
-            <a href="authentication-vs-authorization.html" class="sidebar-link">
-              <span>২. AuthN vs AuthZ</span>
-              <span class="sidebar-tag">Core</span>
-            </a>
-          </li>
-          <li class="sidebar-item">
-            <a href="jwt-structure.html" class="sidebar-link">
-              <span>৩. JWT Structure ও Claims</span>
-              <span class="sidebar-tag">JWT</span>
-            </a>
-          </li>
+          <li class="sidebar-item"><a href="#section-4" class="sidebar-link"><span>৪. JWT কী?</span></a></li>
+          <li class="sidebar-item"><a href="#section-5" class="sidebar-link"><span>৫. JWT কেন দরকার?</span></a></li>
+          <li class="sidebar-item"><a href="#section-6" class="sidebar-link"><span>৬. JWT-এর Structure</span></a></li>
+          <li class="sidebar-item"><a href="#section-7" class="sidebar-link"><span>৭. JWT Header</span></a></li>
+          <li class="sidebar-item"><a href="#section-8" class="sidebar-link"><span>৮. JWT Payload</span></a></li>
+          <li class="sidebar-item"><a href="#section-12" class="sidebar-link"><span>১২. JWT Signature</span></a></li>
+          <li class="sidebar-item"><a href="#section-13" class="sidebar-link"><span>১৩. Secret Key কী?</span></a></li>
         </ul>
       </div>
 
       <div class="sidebar-group">
-        <div class="group-title">ইমপ্লিমেন্টেশন (.NET Web API)</div>
+        <div class="group-title">Claims ও আইডেন্টিটি (Claims)</div>
         <ul class="sidebar-nav">
-          <li class="sidebar-item">
-            <a href="aspnet-core-setup.html" class="sidebar-link">
-              <span>৪. ASP.NET Core Setup</span>
-              <span class="sidebar-tag">API</span>
-            </a>
-          </li>
-          <li class="sidebar-item">
-            <a href="token-generation.html" class="sidebar-link">
-              <span>৫. Token Generation</span>
-              <span class="sidebar-tag">C#</span>
-            </a>
-          </li>
-          <li class="sidebar-item">
-            <a href="role-based-authorization.html" class="sidebar-link">
-              <span>৬. Role Authorization</span>
-              <span class="sidebar-tag">Security</span>
-            </a>
-          </li>
-          <li class="sidebar-item">
-            <a href="refresh-token.html" class="sidebar-link">
-              <span>৭. Refresh Token Flow</span>
-              <span class="sidebar-tag">Auth</span>
-            </a>
-          </li>
+          <li class="sidebar-item"><a href="#section-9" class="sidebar-link"><span>৯. Claim কী?</span></a></li>
+          <li class="sidebar-item"><a href="#section-10" class="sidebar-link"><span>১০. Claim Type কী?</span></a></li>
+          <li class="sidebar-item"><a href="#section-11" class="sidebar-link"><span>১১. Standard ও Custom Claim</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">টোকেন তৈরি (Token Generation)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item"><a href="#section-14" class="sidebar-link"><span>১৪. JWT Generate করার Flow</span></a></li>
+          <li class="sidebar-item"><a href="#section-15" class="sidebar-link"><span>১৫. JWT Object ও String</span></a></li>
+          <li class="sidebar-item"><a href="#section-16" class="sidebar-link"><span>১৬. Access Token কী?</span></a></li>
+          <li class="sidebar-item"><a href="#section-17" class="sidebar-link"><span>১৭. Token Expiration</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">সেশন ও রিফ্রেশ টোকেন (Session)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item"><a href="#section-18" class="sidebar-link"><span>১৮. Long Session মেকানিজম</span></a></li>
+          <li class="sidebar-item"><a href="#section-19" class="sidebar-link"><span>১৯. Refresh Token কী?</span></a></li>
+          <li class="sidebar-item"><a href="#section-24" class="sidebar-link"><span>২৪. Logout কী?</span></a></li>
+          <li class="sidebar-item"><a href="#section-25" class="sidebar-link"><span>২৫. Save Password বনাম Auth</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">রোল ও অথরাইজেশন (Roles)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item"><a href="#section-20" class="sidebar-link"><span>২০. Role-Based Authorization</span></a></li>
+          <li class="sidebar-item"><a href="#section-21" class="sidebar-link"><span>২১. Admin ও User Example</span></a></li>
+          <li class="sidebar-item"><a href="#section-22" class="sidebar-link"><span>২২. [Authorize] কী?</span></a></li>
+          <li class="sidebar-item"><a href="#section-23" class="sidebar-link"><span>২৩. [Authorize(Roles = "Admin")]</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">আর্কিটেকচার ও রেফারেন্স</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item"><a href="#section-26" class="sidebar-link"><span>২৬. Swagger এবং JWT</span></a></li>
+          <li class="sidebar-item"><a href="#section-27" class="sidebar-link"><span>২৭. Complete Flow ডায়াগ্রাম</span></a></li>
+          <li class="sidebar-item"><a href="#section-28" class="sidebar-link"><span>২৮. গুরুত্বপূর্ণ বিষয়গুলো</span></a></li>
+          <li class="sidebar-item"><a href="#official-references" class="sidebar-link"><span>🔗 Official References</span></a></li>
         </ul>
       </div>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Main Content Area -->
     <main class="docs-content">
       <nav class="breadcrumbs">
         <a href="introduction.html">Docs</a>
         <span class="separator">/</span>
-        <span>শুরুর কথা</span>
-        <span class="separator">/</span>
-        <span style="color: var(--text-primary);">পরিচিতি ও ওভারভিউ</span>
+        <span style="color: var(--text-primary);">JWT Authentication & Authorization</span>
       </nav>
 
       <article class="article-header">
-        <h1 class="article-title">JWT Authentication ও Authorization পরিচিতি</h1>
+        <h1 class="article-title">JWT Authentication & Authorization</h1>
         <div class="article-meta">
           <div class="meta-item">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            <span>পড়ার সময়: ৪ মিনিট</span>
+            <span>সম্পূর্ণ ২৮টি বিষয় একত্রে</span>
           </div>
           <div class="meta-item">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-            <span>মডিউল: ০১</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>ASP.NET Core & C#</span>
           </div>
         </div>
       </article>
 
-      <div class="callout callout-concept">
-        <div class="callout-title">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-          স্বাগতম! কেন এই ডকুমেন্টেশন?
+      <!-- 1. Authentication কী? -->
+      <h2 id="section-1">1. Authentication কী?</h2>
+      <p>Authentication মানে হলো <strong>কোন user সেটা verify করা</strong>।</p>
+      <p>সহজভাবে বললে:</p>
+      <blockquote>"তুমি আসলে কে?"</blockquote>
+      <p>ধরো, তুমি একটা website-এ login করছো:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Login Credentials</div>
+          <button class="copy-code-btn">Copy Code</button>
         </div>
+        <div class="code-content"><pre><code>Username: Bondhon
+Password: ********</code></pre></div>
+      </div>
+
+      <p>Server database থেকে check করবে:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Server Flow</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>Username ঠিক আছে?
+        ↓
+Password ঠিক আছে?
+        ↓
+হ্যাঁ → User authenticated
+না  → Login failed</code></pre></div>
+      </div>
+
+      <p>অর্থাৎ <strong>Authentication user-এর identity verify করে।</strong></p>
+
+      <div class="callout callout-realworld">
+        <div class="callout-title">Real-life example</div>
         <div class="callout-body">
-          <p>ওয়েব ডেভেলপমেন্টে বিশেষ করে আধুনিক Backend ও RESTful API তৈরিতে <strong>Authentication</strong> এবং <strong>Authorization</strong> সবচেয়ে ক্রুশিয়াল পার্ট। কিন্তু অনলাইনে বেশিরভাগ টিউটোরিয়াল হয় অতিরিক্ত অ্যাকাডেমিক, নয়তো জটিল ভাষায় লেখা।</p>
-          <p>এই ডকুমেন্টেশনের উদ্দেশ্য খুব সিম্পল: একজন সিএসই স্টুডেন্ট বা ডেভেলপার যেভাবে তার ফ্রেন্ডকে কোনো জটিল কনসেপ্ট সহজে বাংলায় বুঝিয়ে দেয়, ঠিক সেভাবেই আমরা শুরু থেকে শেষ পর্যন্ত পুরো সিকিউরিটি আর্কিটেকচার শিখব।</p>
+          <p>ধরো তুমি university-তে ঢুকতে গেলে security guard তোমার ID card দেখলো। সে check করছে: <em>"তুমি আসলেই এই university-এর student কি না?"</em> এটাই Authentication-এর মতো।</p>
         </div>
       </div>
 
-      <h2>আমরা কী কী শিখব?</h2>
-      <p>আমরা ধাপে ধাপে একদম ফাউন্ডেশন থেকে শুরু করে প্রোডাকশন-লেভেলের ইমপ্লিমেন্টেশন পর্যন্ত কভার করব:</p>
+      <!-- 2. Authorization কী? -->
+      <h2 id="section-2">2. Authorization কী?</h2>
+      <p>Authentication-এর পর আসে Authorization। Authorization-এর প্রশ্ন হলো:</p>
+      <blockquote>"তুমি কী কী করতে পারবে?"</blockquote>
+      <p>ধরো দুইজন user আছে:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Users</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>Bondhon → Admin
+Rahim   → User</code></pre></div>
+      </div>
 
+      <p>দুজনই successfully login করতে পারবে। কিন্তু:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Permissions</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>Admin
+→ User delete করতে পারবে
+→ Admin page দেখতে পারবে
+→ User manage করতে পারবে
+
+User
+→ নিজের profile দেখতে পারবে
+→ নিজের information update করতে পারবে
+→ Admin page দেখতে পারবে না</code></pre></div>
+      </div>
+      <p>এটাই Authorization।</p>
+
+      <div class="callout callout-concept">
+        <div class="callout-title">সহজভাবে</div>
+        <div class="callout-body">
+          <p><strong>Authentication</strong> → তুমি কে?<br><strong>Authorization</strong> → তুমি কী করতে পারবে?</p>
+        </div>
+      </div>
+
+      <!-- 3. Authentication এবং Authorization-এর পার্থক্য -->
+      <h2 id="section-3">3. Authentication এবং Authorization-এর পার্থক্য</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>বিষয়</th>
+            <th>Authentication</th>
+            <th>Authorization</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>কাজ</strong></td>
+            <td>User-এর identity verify করা</td>
+            <td>Permission check করা</td>
+          </tr>
+          <tr>
+            <td><strong>প্রশ্ন</strong></td>
+            <td>তুমি কে?</td>
+            <td>তুমি কী করতে পারবে?</td>
+          </tr>
+          <tr>
+            <td><strong>Example</strong></td>
+            <td>Login</td>
+            <td>Admin page access</td>
+          </tr>
+          <tr>
+            <td><strong>কখন হয়</strong></td>
+            <td>সাধারণত আগে</td>
+            <td>Authentication-এর পরে</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Flow</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>Login
+  ↓
+Authentication
+  ↓
+User কে জানা গেল
+  ↓
+Authorization
+  ↓
+User কী করতে পারবে সেটা check</code></pre></div>
+      </div>
+
+      <!-- 4. JWT কী? -->
+      <h2 id="section-4">4. JWT কী?</h2>
+      <p>JWT-এর full form হলো: <strong>JSON Web Token</strong></p>
+      <p>JWT হলো এমন একটা token format, যেটা ব্যবহার করে client এবং server-এর মধ্যে user-এর authentication information securely পাঠানো যায়।</p>
+      <p>সহজভাবে ধরো:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">JWT Lifecycle</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>User login করলো
+       ↓
+Server username/password verify করলো
+       ↓
+Server একটা JWT তৈরি করলো
+       ↓
+Client JWT সংরক্ষণ করলো
+       ↓
+পরের protected request-এ JWT পাঠালো
+       ↓
+Server JWT verify করলো
+       ↓
+User-এর request accept করলো</code></pre></div>
+      </div>
+
+      <!-- 5. JWT কেন দরকার? -->
+      <h2 id="section-5">5. JWT কেন দরকার?</h2>
+      <p>ধরো তুমি login করেছো। তারপর তুমি request করলে:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">HTTP Request</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>GET /api/profile</code></pre></div>
+      </div>
+      <p>Server কীভাবে জানবে যে এই request Bondhon-এর? প্রতিবার তো আবার Username এবং Password পাঠানো উচিত না। তাই login-এর পরে server একটা token দেয়।</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Flow</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>Login
+ ↓
+JWT
+ ↓
+পরের request-এ JWT
+ ↓
+Server বুঝতে পারে user authenticated</code></pre></div>
+      </div>
+
+      <!-- 6. JWT-এর Structure -->
+      <h2 id="section-6">6. JWT-এর Structure</h2>
+      <p>একটা JWT সাধারণত তিনটা অংশ নিয়ে তৈরি:</p>
+      <blockquote>Header.Payload.Signature</blockquote>
+      <p>তিনটা অংশ <code>.</code> দিয়ে separated থাকে:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Token Structure</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>xxxxx.yyyyy.zzzzz</code></pre></div>
+      </div>
+      <p>তিনটি অংশ হলো: <strong>1. Header</strong>, <strong>2. Payload</strong>, <strong>3. Signature</strong>।</p>
+
+      <!-- 7. JWT Header -->
+      <h2 id="section-7">7. JWT Header</h2>
+      <p>Header-এ token সম্পর্কে কিছু information থাকে। উদাহরণ:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">JSON</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>{
+  "alg": "HS256",
+  "typ": "JWT"
+}</code></pre></div>
+      </div>
+      <p>এখানে:</p>
       <ul>
-        <li><strong>Authentication vs Authorization:</strong> পরিচয় যাচাই আর পারমিশন চেক করার ভেতরকার ফান্ডামেন্টাল পার্থক্য।</li>
-        <li><strong>JWT (JSON Web Token) Deep Dive:</strong> টোকেনের ভেতরের তিনটি অংশ—Header, Payload ও Signature কীভাবে ক্রিপ্টোগ্রাফিক্যালি কাজ করে।</li>
-        <li><strong>Claims & Identity:</strong> User ID, Role বা পারমিশন কীভাবে টোকেনের ভেতরে Claim আকারে সুরক্ষিত রাখতে হয়।</li>
-        <li><strong>ASP.NET Core Web API Integration:</strong> <code>Program.cs</code> ফাইলে Dependency Injection ও Middleware কনফিগার করা।</li>
-        <li><strong>Controller & Token Generation:</strong> Login DTO ভ্যালিডেশন এবং ক্লায়েন্টে সুরক্ষিত টোকেন রিটার্ন করা।</li>
-        <li><strong>Role-based Authorization:</strong> <code>[Authorize(Roles = "Admin")]</code> দিয়ে সুরক্ষিত Endpoint বানানো।</li>
-        <li><strong>Refresh Token মেকানিজম:</strong> Access Token এক্সপায়ার হলে বারবার লগইন ছাড়া সেশন সচল রাখার বেস্ট প্র্যাকটিস।</li>
+        <li><code>alg</code> → কোন algorithm দিয়ে token sign করা হয়েছে। আমাদের project-এ আমরা ব্যবহার করতে পারি: <code>HMAC-SHA256</code>।</li>
+        <li><code>typ</code> → Token-এর type (JWT)।</li>
       </ul>
 
-      <h2>প্রতিটি টপিকের ফরম্যাট</h2>
-      <p>পুরো গাইডে প্রতিটি চ্যাপ্টার একই ধারাবাহিক ৮টি ধাপে সাজানো হয়েছে যাতে পড়তে সুবিধা হয়:</p>
+      <!-- 8. JWT Payload -->
+      <h2 id="section-8">8. JWT Payload</h2>
+      <p>Payload হলো JWT-এর সবচেয়ে গুরুত্বপূর্ণ অংশগুলোর একটি। এখানে claims থাকে। যেমন:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">JSON Payload</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>{
+  "nameid": "10",
+  "unique_name": "Bondhon",
+  "role": "Admin"
+}</code></pre></div>
+      </div>
+      <p>এখানে: <code>nameid</code> → User ID, <code>unique_name</code> → Username, <code>role</code> → User-এর role। এছাড়াও token-এর expiration, issuer, audience ইত্যাদি information থাকতে পারে।</p>
+
+      <!-- 9. Claim কী? -->
+      <h2 id="section-9">9. Claim কী?</h2>
+      <p>Claim হলো <strong>user সম্পর্কে কোনো information বা statement</strong>। যেমন:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Claims Info</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>User ID = 10
+Username = Bondhon
+Role = Admin</code></pre></div>
+      </div>
+      <p>এগুলো আলাদা আলাদা claim হতে পারে। C#-এ:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">C#</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+
+new Claim(ClaimTypes.Name, user.UserName)
+
+new Claim(ClaimTypes.Role, user.Role)</code></pre></div>
+      </div>
+      <p>এখানে: <code>NameIdentifier</code> → User ID, <code>Name</code> → Username, <code>Role</code> → User Role।</p>
+      <blockquote>Claim হলো JWT-এর মধ্যে রাখা user-এর কোনো একটা information।</blockquote>
+
+      <!-- 10. Claim Type কী? -->
+      <h2 id="section-10">10. Claim Type কী?</h2>
+      <p>Claim-এর একটা <strong>Type</strong> এবং একটা <strong>Value</strong> থাকে। যেমন:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">C#</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>new Claim(ClaimTypes.Role, "Admin")</code></pre></div>
+      </div>
+      <p>এখানে: <code>Type</code> → Role, <code>Value</code> → Admin। অর্থাৎ: <code>Role = Admin</code>।</p>
+
+      <!-- 11. Standard Claim এবং Custom Claim -->
+      <h2 id="section-11">11. Standard Claim এবং Custom Claim</h2>
+      <p>.NET কিছু standard claim type দেয়। যেমন:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">C# Standard Claims</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>ClaimTypes.Name
+ClaimTypes.NameIdentifier
+ClaimTypes.Role
+ClaimTypes.Email</code></pre></div>
+      </div>
+      <p>তুমি নিজের custom claim-ও বানাতে পারো:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">C# Custom Claims</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>new Claim("Department", "CSE")
+new Claim("Permission", "DeleteUser")</code></pre></div>
+      </div>
+
+      <!-- 12. JWT Signature -->
+      <h2 id="section-12">12. JWT Signature</h2>
+      <p>JWT-এর third part হলো Signature:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Signature Location</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>Header.Payload.Signature
+               ↑
+            Signature</code></pre></div>
+      </div>
+      <p>Signature তৈরি করার সময় secret key এবং একটা algorithm ব্যবহার করা হয়:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Signature Generation</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>Secret Key
+    +
+HMAC-SHA256
+    +
+Header + Payload
+    ↓
+Signature</code></pre></div>
+      </div>
+      <p>Signature-এর উদ্দেশ্য হলো <strong>token-এর information পরিবর্তন করা হয়েছে কি না সেটা verify করা</strong>।</p>
+
+      <!-- 13. Secret Key কী? -->
+      <h2 id="section-13">13. Secret Key কী?</h2>
+      <p>Secret Key হলো server-এর কাছে থাকা একটা secret value। যেমন: <code>MyVeryLongSecretKey123456</code></p>
+      <p>এই key ব্যবহার করে JWT sign করা হয়।</p>
+      <div class="callout callout-mistake">
+        <div class="callout-title">গুরুত্বপূর্ণ সতর্কতা</div>
+        <div class="callout-body">
+          <p><strong>Secret Key client-এর কাছে পাঠানো যাবে না।</strong> এটা server-side secret হিসেবে রাখতে হবে। Production application-এ সাধারণত environment variable বা proper secret-management system ব্যবহার করা হয়।</p>
+        </div>
+      </div>
+
+      <!-- 14. JWT Generate করার Flow -->
+      <h2 id="section-14">14. JWT Generate করার Flow</h2>
+      <p>আমাদের ASP.NET Core application-এ login করার পর flow হবে:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Flow Diagram</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>Username + Password
+        ↓
+Database থেকে User খোঁজা
+        ↓
+Password Verify
+        ↓
+Claims তৈরি
+        ↓
+Secret Key
+        ↓
+Signing Credentials
+        ↓
+JWT তৈরি
+        ↓
+JWT String
+        ↓
+Client-কে পাঠানো</code></pre></div>
+      </div>
+
+      <!-- 15. JWT Object এবং JWT String -->
+      <h2 id="section-15">15. JWT Object এবং JWT String</h2>
+      <p>প্রথমে আমরা C#-এ একটা JWT object তৈরি করতে পারি:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">C# JwtSecurityToken</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>var token = new JwtSecurityToken(
+    issuer: config["JwtSettings:Issuer"],
+    audience: config["JwtSettings:Audience"],
+    claims: claims,
+    expires: DateTime.UtcNow.AddHours(2),
+    signingCredentials: creds
+);</code></pre></div>
+      </div>
+      <p>এখানে <code>token</code> হলো একটি <code>JwtSecurityToken</code> object। কিন্তু client-কে পাঠানোর জন্য এটাকে JWT string-এ convert করতে হবে:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">C# WriteToken</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>string jwtToken = new JwtSecurityTokenHandler().WriteToken(token);</code></pre></div>
+      </div>
+      <p>তারপর ক্লায়েন্টকে রেসপন্স পাঠানো হয়:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">C# Response</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>return Results.Ok(new { token = jwtToken });</code></pre></div>
+      </div>
+      <p>Client response পাবে:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Client JSON Response</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>{
+  "token": "eyJhbGciOiJIUzI1NiIs..."
+}</code></pre></div>
+      </div>
+
+      <!-- 16. Access Token কী? -->
+      <h2 id="section-16">16. Access Token কী?</h2>
+      <p>Access Token হলো এমন token যেটা ব্যবহার করে client protected API access করে। যেমন:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Access Token Flow</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>Login
+ ↓
+Access Token
+ ↓
+GET /api/profile
+ ↓
+Server token verify
+ ↓
+Profile data</code></pre></div>
+      </div>
+      <p>সাধারণত Access Token-এর lifetime তুলনামূলকভাবে short রাখা হয় (যেমন: 15 minutes, 30 minutes, 1 hour)। আমাদের learning project-এ শুরুতে 2 hours দিয়েও test করা যেতে পারে।</p>
+
+      <!-- 17. Token Expiration -->
+      <h2 id="section-17">17. Token Expiration</h2>
+      <p>JWT-এর একটা expiration time থাকে। যেমন:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">C# Expiration</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>expires: DateTime.UtcNow.AddHours(2)</code></pre></div>
+      </div>
+      <blockquote>এই token এখন থেকে ২ ঘণ্টা valid থাকবে।</blockquote>
+      <p>ধরো: Login: 10:00 AM → Token expires: 12:00 PM। 12:00 PM-এর পরে server token reject করবে।</p>
+
+      <!-- 18. Facebook-এর মতো অনেকক্ষণ Login -->
+      <h2 id="section-18">18. তাহলে Facebook-এর মতো অনেকক্ষণ Login করে থাকা কীভাবে হয়?</h2>
+      <p>এখানে <strong>Access Token</strong> এবং <strong>Refresh Token</strong>-এর concept আসে।</p>
+      <ul>
+        <li><strong>Access Token:</strong> Short lifetime</li>
+        <li><strong>Refresh Token:</strong> Longer lifetime</li>
+      </ul>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Flow</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>Login
+ ↓
+Access Token + Refresh Token
+ ↓
+Access Token দিয়ে API access
+ ↓
+Access Token expired
+ ↓
+Refresh Token পাঠানো
+ ↓
+Server Refresh Token verify করে
+ ↓
+New Access Token
+ ↓
+User আবার কাজ করতে পারে</code></pre></div>
+      </div>
+      <p>এইভাবে user-কে বারবার username/password দিতে হয় না।</p>
+
+      <!-- 19. Refresh Token কী? -->
+      <h2 id="section-19">19. Refresh Token কী?</h2>
+      <p>Refresh Token হলো এমন একটা credential যেটা ব্যবহার করে expired Access Token-এর বদলে নতুন Access Token নেওয়া যায়। ধরো:</p>
+      <ul>
+        <li><code>Access Token</code> → 15 minutes</li>
+        <li><code>Refresh Token</code> → 7 days</li>
+      </ul>
+      <p>15 minutes পরে: Access Token expired → Refresh Token valid → New Access Token। তাই user আবার login না করেও application ব্যবহার করতে পারে।</p>
+
+      <!-- 20. Role-Based Authorization -->
+      <h2 id="section-20">20. Role-Based Authorization</h2>
+      <p>আমাদের application-এ দুই ধরনের user থাকতে পারে: <code>Admin</code> এবং <code>User</code>। Login করার সময় JWT-এর মধ্যে role claim রাখা যায়:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">C# Role Claim</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>new Claim(ClaimTypes.Role, user.Role)</code></pre></div>
+      </div>
+      <p>যদি <code>user.Role = "Admin"</code> হয়, তাহলে JWT-এর মধ্যে <code>Role = Admin</code> থাকবে। তারপর ASP.NET Core-এ <code>[Authorize(Roles = "Admin")]</code> দিয়ে Admin-only endpoint তৈরি করা যায়।</p>
+
+      <!-- 21. Admin এবং User Example -->
+      <h2 id="section-21">21. Admin এবং User Example</h2>
+      <p>ধরো Bondhon-এর <code>Role = Admin</code>:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Admin Flow</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>JWT → Role = Admin → Admin endpoint access → Admin page (This is Admin Page)</code></pre></div>
+      </div>
+      <p>অন্যদিকে Rahim-এর <code>Role = User</code>:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">User Flow</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>User endpoint  → Hi Rahim, Welcome!
+Admin endpoint → Access Denied</code></pre></div>
+      </div>
+
+      <!-- 22. [Authorize] কী? -->
+      <h2 id="section-22">22. `[Authorize]` কী?</h2>
+      <p><code>[Authorize]</code> দিয়ে আমরা বলতে পারি:</p>
+      <blockquote>এই endpoint access করতে authenticated user হতে হবে।</blockquote>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">C# Authorize</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>[Authorize]
+[HttpGet("profile")]
+public IActionResult Profile()
+{
+    return Ok("Your profile");
+}</code></pre></div>
+      </div>
+      <p>Login না করা user এই endpoint access করতে পারবে না।</p>
+
+      <!-- 23. [Authorize(Roles = "Admin")] -->
+      <h2 id="section-23">23. `[Authorize(Roles = "Admin")]`</h2>
+      <p>এটা আরও specific। <code>[Authorize(Roles = "Admin")]</code> মানে: <strong>User authenticated হওয়ার পাশাপাশি তার role অবশ্যই `Admin` হতে হবে।</strong></p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Check Logic</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>Authenticated?
+     ↓
+    Yes
+     ↓
+Role = Admin?
+     ↓
+   Yes → Allow
+   No  → Deny</code></pre></div>
+      </div>
+
+      <!-- 24. Logout কী? -->
+      <h2 id="section-24">24. Logout কী?</h2>
+      <p>Logout মানে শুধু frontend থেকে token delete করা নয়। Real application-এ session/token invalidation-এর proper strategy দরকার হতে পারে। বিশেষ করে Refresh Token ব্যবহার করলে:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Logout Flow</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>Logout
+ ↓
+Refresh Token revoke/invalidate
+ ↓
+Session শেষ
+ ↓
+User আবার login করবে</code></pre></div>
+      </div>
+
+      <!-- 25. Browser Save Password vs Auth -->
+      <h2 id="section-25">25. Browser-এর "Save Password" আর Authentication এক জিনিস নয়</h2>
+      <p>এটা খুব গুরুত্বপূর্ণ। Browser-এ যদি দেখা যায় <code>Save password?</code>—এটা browser/password manager-এর feature। অন্যদিকে <code>User logged in</code>—এটা application-এর authentication state। দুটো আলাদা:</p>
+      <blockquote>Application Authentication ≠ Browser Password Manager</blockquote>
+      <p>একজন user logout করার পর browser saved password দেখাতে পারে, কিন্তু তার মানে user এখনও authenticated—এমন নয়।</p>
+
+      <!-- 26. Swagger এবং JWT -->
+      <h2 id="section-26">26. Swagger এবং JWT</h2>
+      <p>Swagger দিয়ে protected API test করতে JWT Bearer authentication configure করা যায়। Request সাধারণত এমন হয়:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">HTTP Header</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>Authorization: Bearer &lt;JWT&gt;</code></pre></div>
+      </div>
+      <p>Swagger UI-তে <code>Authorize</code> button ব্যবহার করে token দিয়ে খুব সহজেই API টেস্ট করা যায়।</p>
+
+      <!-- 27. JWT Authentication-এর Complete Flow -->
+      <h2 id="section-27">27. JWT Authentication-এর Complete Flow</h2>
+      <p>শেষে পুরো system-টাকে এভাবে ভাবতে পারো:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Complete Architecture Flow</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>                    REGISTER
+                       ↓
+                Password Hashing
+                       ↓
+                    Database
+                       ↓
+
+                     LOGIN
+                       ↓
+             Username + Password
+                       ↓
+                Password Verify
+                       ↓
+                    Claims
+                       ↓
+              Access Token তৈরি
+                       ↓
+             Refresh Token তৈরি
+                       ↓
+                  Client
+                       ↓
+            ┌──────────┴──────────┐
+            ↓                     ↓
+      Access Token          Refresh Token
+            ↓                     ↓
+       API Requests        New Access Token
+            ↓
+      Server Validation
+            ↓
+      Authentication
+            ↓
+      Authorization
+            ↓
+       ┌────┴────┐
+       ↓         ↓
+     Admin      User
+       ↓         ↓
+ Admin Page   User Page</code></pre></div>
+      </div>
+
+      <!-- 28. সবচেয়ে গুরুত্বপূর্ণ বিষয়গুলো -->
+      <h2 id="section-28">28. সবচেয়ে গুরুত্বপূর্ণ বিষয়গুলো</h2>
+      <p>JWT শেখার সময় এই sequence-টা মনে রাখো:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">Core Sequence</div>
+          <button class="copy-code-btn">Copy Code</button>
+        </div>
+        <div class="code-content"><pre><code>Authentication
+      ↓
+JWT
+      ↓
+Claims
+      ↓
+Access Token
+      ↓
+Authorization
+      ↓
+Role-Based Authorization
+      ↓
+Token Expiration
+      ↓
+Refresh Token
+      ↓
+Logout / Revocation</code></pre></div>
+      </div>
+
+      <p>আর সবচেয়ে important distinction:</p>
+      <div class="breakdown-card">
+        <div class="breakdown-item">
+          <span class="breakdown-code">Authentication</span>
+          <span class="breakdown-desc">তুমি কে? (Identity Verification)</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">Authorization</span>
+          <span class="breakdown-desc">তুমি কী করতে পারবে? (Permission Check)</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">Access Token</span>
+          <span class="breakdown-desc">API access করার credential</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">Refresh Token</span>
+          <span class="breakdown-desc">নতুন Access Token পাওয়ার credential</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">Claim</span>
+          <span class="breakdown-desc">User/token সম্পর্কে information</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">Role</span>
+          <span class="breakdown-desc">User-এর permission category</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">Signature</span>
+          <span class="breakdown-desc">Token পরিবর্তন করা হয়েছে কি না verify করতে সাহায্য করে</span>
+        </div>
+      </div>
+
+      <!-- Official References -->
+      <h2 id="official-references">Official References</h2>
+      <p>আরও গভীরে যাওয়ার সময় Microsoft-এর official documentation reference হিসেবে ব্যবহার করা ভালো:</p>
 
       <div class="breakdown-card">
         <div class="breakdown-item">
-          <span class="breakdown-code">১. এটা কী?</span>
-          <span class="breakdown-desc">কনসেপ্টের একদম সহজ ও প্রাঞ্জল সংজ্ঞা।</span>
+          <a href="https://learn.microsoft.com/aspnet/core/security/authentication/" target="_blank" rel="noopener noreferrer" style="font-weight:600; color:var(--accent-primary); text-decoration:none;">
+            🌐 ASP.NET Core Authentication Overview &rarr;
+          </a>
+          <span class="breakdown-desc">Authentication handlers, schemes, and cookie/bearer security models in .NET.</span>
         </div>
         <div class="breakdown-item">
-          <span class="breakdown-code">২. কেন দরকার?</span>
-          <span class="breakdown-desc">এটা ব্যবহার না করলে কী সমস্যা হতে পারে এবং কেন এটা সমাধান দেয়।</span>
+          <a href="https://learn.microsoft.com/aspnet/core/security/authentication/jwt-authn" target="_blank" rel="noopener noreferrer" style="font-weight:600; color:var(--accent-primary); text-decoration:none;">
+            🌐 JWT Bearer Authentication in ASP.NET Core &rarr;
+          </a>
+          <span class="breakdown-desc">How to configure JwtBearer middleware, token validation parameters, and security tokens.</span>
         </div>
         <div class="breakdown-item">
-          <span class="breakdown-code">৩. কীভাবে কাজ করে?</span>
-          <span class="breakdown-desc">বিহাইন্ড দ্য সিন বা ইন্টারনাল ফ্লো।</span>
+          <a href="https://learn.microsoft.com/aspnet/core/security/authorization/claims" target="_blank" rel="noopener noreferrer" style="font-weight:600; color:var(--accent-primary); text-decoration:none;">
+            🌐 Claims-based authorization in ASP.NET Core &rarr;
+          </a>
+          <span class="breakdown-desc">Creating, reading, and enforcing claims in controllers and policy requirements.</span>
         </div>
         <div class="breakdown-item">
-          <span class="breakdown-code">৪. বাস্তব জীবনের উদাহরণ</span>
-          <span class="breakdown-desc">ডেইলি লাইফের কোনো সিচুয়েশনের সাথে মিলিয়ে কনসেপ্ট ফিল করা।</span>
-        </div>
-        <div class="breakdown-item">
-          <span class="breakdown-code">৫. কোড এক্সাম্পল</span>
-          <span class="breakdown-desc">C# এবং ASP.NET Core-এ একদম ক্লিন কোড স্নিপেট।</span>
-        </div>
-        <div class="breakdown-item">
-          <span class="breakdown-code">৬. কোডের লাইন-বাই-লাইন ব্যাখ্যা</span>
-          <span class="breakdown-desc">প্রতিটি মেথড ও ক্লাসের বিস্তারিত বাংলা ব্যাখ্যা।</span>
-        </div>
-        <div class="breakdown-item">
-          <span class="breakdown-code">৭. কমন ভুলগুলো</span>
-          <span class="breakdown-desc">নতুন ডেভেলপাররা সচরাচর যে সব বাগ বা সিকিউরিটি ভুল করে থাকে।</span>
-        </div>
-        <div class="breakdown-item">
-          <span class="breakdown-code">৮. শর্ট সামারি</span>
-          <span class="breakdown-desc">এক নজরে মনে রাখার মতো গুরুত্বপূর্ণ টেক-অ্যাওয়ে।</span>
+          <a href="https://learn.microsoft.com/aspnet/core/security/authorization/roles" target="_blank" rel="noopener noreferrer" style="font-weight:600; color:var(--accent-primary); text-decoration:none;">
+            🌐 Role-based authorization in ASP.NET Core &rarr;
+          </a>
+          <span class="breakdown-desc">Protecting endpoints using [Authorize(Roles = "...")] and role providers.</span>
         </div>
       </div>
 
       <!-- Navigation Footer -->
       <div class="docs-nav-footer">
         <div></div>
-        <a href="authentication-vs-authorization.html" class="nav-card next">
-          <span class="nav-card-label">পরবর্তী চ্যাপ্টার &rarr;</span>
-          <span class="nav-card-title">Authentication vs Authorization</span>
+        <a href="#section-1" class="nav-card next">
+          <span class="nav-card-label">উপরে ফিরে যান &uarr;</span>
+          <span class="nav-card-title">শুরুর অংশে যান</span>
         </a>
       </div>
     </main>

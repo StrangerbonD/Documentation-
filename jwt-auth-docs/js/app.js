@@ -1,65 +1,34 @@
-// Search Database Index
+// Search Database Index with all 28 sections
 const searchIndex = [
-  {
-    title: "পরিচিতি ও ওভারভিউ (Overview)",
-    url: "introduction.html",
-    category: "শুরুর কথা",
-    description: "JWT Authentication & Authorization গাইড কী এবং কেন তৈরি করা হয়েছে।"
-  },
-  {
-    title: "Authentication vs Authorization",
-    url: "authentication-vs-authorization.html",
-    category: "কোর কনসেপ্টস",
-    description: "Authentication আর Authorization-এর মূল পার্থক্য, লাইফ সাইকেল ও বাস্তব উদাহরণ।"
-  },
-  {
-    title: "Authentication কী এবং কেন দরকার?",
-    url: "authentication-vs-authorization.html#what-is-authentication",
-    category: "Authentication vs Authorization",
-    description: "ব্যবহারকারীর পরিচয় যাচাই করা এবং পাসওয়ার্ড যাচাইকরণ।"
-  },
-  {
-    title: "Authorization কী এবং কেন দরকার?",
-    url: "authentication-vs-authorization.html#what-is-authorization",
-    category: "Authentication vs Authorization",
-    description: "ইউজারের রোল এবং রিসোর্স অ্যাক্সেস পারমিশন চেক করা।"
-  },
-  {
-    title: "JWT Structure ও Claims Deep Dive",
-    url: "jwt-structure.html",
-    category: "কোর কনসেপ্টস",
-    description: "Header, Payload, Signature এবং ClaimTypes কীভাবে কাজ করে।"
-  },
-  {
-    title: "JWT Payload ও Claims",
-    url: "jwt-structure.html#jwt-payload",
-    category: "JWT Deep Dive",
-    description: "ClaimTypes.NameIdentifier, ClaimTypes.Role ও সিক্রেট কী নিরাপত্তা।"
-  },
-  {
-    title: "ASP.NET Core-এ JWT Setup ও Middleware",
-    url: "aspnet-core-setup.html",
-    category: "ইমপ্লিমেন্টেশন",
-    description: "Program.cs-এ AddAuthentication, AddJwtBearer এবং UseAuthentication কনফিগার করা।"
-  },
-  {
-    title: "Login Controller ও Token Generation",
-    url: "token-generation.html",
-    category: "ইমপ্লিমেন্টেশন",
-    description: "Login DTO, Password verify করে JWT Token তৈরি ও রেসপন্স পাঠানো।"
-  },
-  {
-    title: "Role & Policy-based Authorization",
-    url: "role-based-authorization.html",
-    category: "ইমপ্লিমেন্টেশন",
-    description: "[Authorize(Roles = 'Admin')] এবং কাস্টম পলিসি হ্যান্ডলার।"
-  },
-  {
-    title: "Refresh Token Flow & Architecture",
-    url: "refresh-token.html",
-    category: "ইমপ্লিমেন্টেশন",
-    description: "Access token expire হলে silent refresh ও ডাটাবেস টোকেন ম্যানেজমেন্ট।"
-  }
+  { title: "১. Authentication কী?", url: "introduction.html#section-1", category: "ফাউন্ডেশন", description: "Authentication মানে হলো কোন user সেটা verify করা—তুমি আসলে কে?" },
+  { title: "২. Authorization কী?", url: "introduction.html#section-2", category: "ফাউন্ডেশন", description: "Authorization মানে হলো permission check—তুমি কী কী করতে পারবে?" },
+  { title: "৩. Authentication এবং Authorization-এর পার্থক্য", url: "introduction.html#section-3", category: "ফাউন্ডেশন", description: "AuthN ও AuthZ এর বিস্তারিত তুলনামূলক টেবিল ও ফ্লো।" },
+  { title: "৪. JWT কী?", url: "introduction.html#section-4", category: "JWT ও স্ট্রাকচার", description: "JSON Web Token কী এবং কীভাবে ক্লায়েন্ট ও সার্ভারের মাঝে কাজ করে।" },
+  { title: "৫. JWT কেন দরকার?", url: "introduction.html#section-5", category: "JWT ও স্ট্রাকচার", description: "প্রতি রিকোয়েস্টে বারবার ইউজারনেম/পাসওয়ার্ড না পাঠিয়ে টোকেন পাঠানো।" },
+  { title: "৬. JWT-এর Structure", url: "introduction.html#section-6", category: "JWT ও স্ট্রাকচার", description: "Header.Payload.Signature তিনটি অংশের স্ট্রাকচার।" },
+  { title: "৭. JWT Header", url: "introduction.html#section-7", category: "JWT ও স্ট্রাকচার", description: "alg (HMAC-SHA256) এবং typ (JWT) মেটাডাটা।" },
+  { title: "৮. JWT Payload", url: "introduction.html#section-8", category: "JWT ও স্ট্রাকচার", description: "Claims, User ID, Username, Role ইত্যাদি স্টোর করা।" },
+  { title: "৯. Claim কী?", url: "introduction.html#section-9", category: "Claims ও আইডেন্টিটি", description: "User সম্পর্কে কোনো information বা statement (যেমন NameIdentifier, Role)।" },
+  { title: "১০. Claim Type কী?", url: "introduction.html#section-10", category: "Claims ও আইডেন্টিটি", description: "Claim-এর Type এবং Value (যেমন Role = Admin)।" },
+  { title: "১১. Standard Claim এবং Custom Claim", url: "introduction.html#section-11", category: "Claims ও আইডেন্টিটি", description: "ClaimTypes.Email বনাম কাস্টম Department, Permission ক্লেইম।" },
+  { title: "১২. JWT Signature", url: "introduction.html#section-12", category: "JWT ও স্ট্রাকচার", description: "Secret Key + Algorithm দিয়ে টোকেনের অখণ্ডতা যাচাই করা।" },
+  { title: "১৩. Secret Key কী?", url: "introduction.html#section-13", category: "JWT ও স্ট্রাকচার", description: "সার্ভারের গোপন চাবি এবং ক্লায়েন্টে কখনো না পাঠানোর নিয়ম।" },
+  { title: "১৪. JWT Generate করার Flow", url: "introduction.html#section-14", category: "টোকেন তৈরি", description: "Login থেকে Claims, Signing Credentials হয়ে টোকেন তৈরির ফ্লো।" },
+  { title: "১৫. JWT Object এবং JWT String", url: "introduction.html#section-15", category: "টোকেন তৈরি", description: "JwtSecurityToken object থেকে WriteToken() দিয়ে স্ট্রিং কনভার্সন।" },
+  { title: "১৬. Access Token কী?", url: "introduction.html#section-16", category: "টোকেন তৈরি", description: "Protected API এক্সেস করার স্বল্পমেয়াদী ক্রেডেনশিয়াল।" },
+  { title: "১৭. Token Expiration", url: "introduction.html#section-17", category: "টোকেন তৈরি", description: "expires: DateTime.UtcNow.AddHours(2) এবং লাইফটাইম লিমিট।" },
+  { title: "১৮. Facebook-এর মতো Long Login কীভাবে হয়?", url: "introduction.html#section-18", category: "সেশন ও রিফ্রেশ", description: "Access Token ও Refresh Token-এর সমন্বয়ে নিরবচ্ছিন্ন লগইন সেশন।" },
+  { title: "১৯. Refresh Token কী?", url: "introduction.html#section-19", category: "সেশন ও রিফ্রেশ", description: "Expired Access Token-এর বদলে নতুন Access Token সংগ্রহের মেকানিজম।" },
+  { title: "২০. Role-Based Authorization", url: "introduction.html#section-20", category: "রোল ও অথরাইজেশন", description: "Admin এবং User রোলে আলাদা এক্সেস দেওয়া।" },
+  { title: "২১. Admin এবং User Example", url: "introduction.html#section-21", category: "রোল ও অথরাইজেশন", description: "Bondhon (Admin) বনাম Rahim (User) এন্ডপয়েন্ট এক্সেস।" },
+  { title: "২২. [Authorize] কী?", url: "introduction.html#section-22", category: "রোল ও অথরাইজেশন", description: "লগইন করা ইউজারের জন্য এন্ডপয়েন্ট প্রোটেকশন।" },
+  { title: "২৩. [Authorize(Roles = 'Admin')]", url: "introduction.html#section-23", category: "রোল ও অথরাইজেশন", description: "শুধুমাত্র নির্দিষ্ট অ্যাডমিন রোলের পারমিশন চেক।" },
+  { title: "২৪. Logout কী?", url: "introduction.html#section-24", category: "সেশন ও রিফ্রেশ", description: "Frontend থেকে টোকেন মোছা এবং Refresh Token Revoke করা।" },
+  { title: "২৫. Browser-এর Save Password বনাম Auth", url: "introduction.html#section-25", category: "সেশন ও রিফ্রেশ", description: "Browser Password Manager আর Application Auth-এর ভিন্নতা।" },
+  { title: "২৬. Swagger এবং JWT", url: "introduction.html#section-26", category: "আর্কিটেকচার", description: "Authorization: Bearer <JWT> দিয়ে Swagger UI-তে টেস্ট করা।" },
+  { title: "২৭. Complete Architecture Flow", url: "introduction.html#section-27", category: "আর্কিটেকচার", description: "Register, Login, Token, Client, Role থেকে Admin/User Page সম্পূর্ণ ফ্লো।" },
+  { title: "২৮. সবচেয়ে গুরুত্বপূর্ণ বিষয়গুলো", url: "introduction.html#section-28", category: "আর্কিটেকচার", description: "JWT-র মূল সিকোয়েন্স এবং ৭টি কোর কনসেপ্টের সামারি।" },
+  { title: "Official References", url: "introduction.html#official-references", category: "রেফারেন্স", description: "Microsoft Learn-এর অফিশিয়াল ডকুমেন্টেশন লিংক।" }
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -67,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSidebar();
   initCodeCopy();
   initSearch();
-  highlightActiveSidebarLink();
+  initScrollspy();
 });
 
 // 1. Theme Management (Light / Dark)
@@ -151,24 +120,32 @@ function initSidebar() {
   });
 }
 
-// 3. Highlight Active Sidebar Link
-function highlightActiveSidebarLink() {
-  const currentPath = window.location.pathname;
-  const pageName = currentPath.substring(currentPath.lastIndexOf('/') + 1) || 'introduction.html';
-
+// 3. Scrollspy: Highlight Active Sidebar Link as User Scrolls
+function initScrollspy() {
+  const sections = document.querySelectorAll('h2[id]');
   const sidebarLinks = document.querySelectorAll('.sidebar-link');
-  sidebarLinks.forEach(link => {
-    const href = link.getAttribute('href');
-    if (!href) return;
-    
-    const linkPage = href.split('#')[0].replace(/^(\.\/|\.\.\/)+/, '');
-    if (pageName === linkPage || (pageName === '' && linkPage === 'introduction.html')) {
-      link.classList.add('active');
-      link.scrollIntoView({ block: 'nearest' });
-    } else {
-      link.classList.remove('active');
-    }
+
+  if (!sections.length || !sidebarLinks.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        sidebarLinks.forEach(link => {
+          const href = link.getAttribute('href');
+          if (href && href.includes('#' + id)) {
+            sidebarLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            link.scrollIntoView({ block: 'nearest' });
+          }
+        });
+      }
+    });
+  }, {
+    rootMargin: '-20% 0px -70% 0px'
   });
+
+  sections.forEach(section => observer.observe(section));
 }
 
 // 4. Code Block Copy to Clipboard
@@ -187,17 +164,15 @@ function initCodeCopy() {
 
       try {
         await navigator.clipboard.writeText(textToCopy);
-        const originalHtml = btn.innerHTML;
-        
-        btn.innerHTML = `
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          <span style="color:#22c55e; font-weight:600;">Copied!</span>
-        `;
+        const originalText = btn.innerText;
+        btn.innerText = 'Copied!';
+        btn.style.color = '#22c55e';
+        btn.style.borderColor = '#22c55e';
 
         setTimeout(() => {
-          btn.innerHTML = originalHtml;
+          btn.innerText = originalText;
+          btn.style.color = '';
+          btn.style.borderColor = '';
         }, 2000);
       } catch (err) {
         console.error('Failed to copy text: ', err);
@@ -220,7 +195,7 @@ function initSearch() {
     searchModalBackdrop.classList.add('open');
     searchInput.value = '';
     selectedIndex = -1;
-    renderResults(searchIndex.slice(0, 5));
+    renderResults(searchIndex.slice(0, 6));
     setTimeout(() => searchInput.focus(), 50);
   }
 
@@ -242,7 +217,7 @@ function initSearch() {
     }
   });
 
-  // Keyboard shortcut Ctrl+K or Cmd+K or /
+  // Keyboard shortcut Ctrl+K or Cmd+K
   document.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault();
@@ -262,7 +237,7 @@ function initSearch() {
     selectedIndex = -1;
 
     if (!query) {
-      renderResults(searchIndex.slice(0, 5));
+      renderResults(searchIndex.slice(0, 6));
       return;
     }
 
@@ -321,7 +296,6 @@ function initSearch() {
       return;
     }
 
-    // Determine relative path based on current folder
     const isInDocs = window.location.pathname.includes('/docs/');
     const pathPrefix = isInDocs ? '' : 'docs/';
 
