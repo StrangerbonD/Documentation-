@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Refresh Token Flow & Architecture | JWT Auth Docs</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="top-header">
+    <div class="header-left">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a href="introduction.html" class="brand-logo">
+        <div class="brand-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <span>JWT Auth Docs</span>
+        <span class="brand-badge">.NET 8</span>
+      </a>
+    </div>
+
+    <div class="header-right">
+      <button class="search-btn" id="searchBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <span>টপিক সার্চ করুন...</span>
+        <span class="search-shortcut">Ctrl K</span>
+      </button>
+
+      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+        <!-- Sun/Moon icon injected by JS -->
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="docs-container">
+    <div class="sidebar-overlay"></div>
+
+    <!-- Left Sidebar -->
+    <aside class="docs-sidebar">
+      <div class="sidebar-group">
+        <div class="group-title">শুরুর কথা (Getting Started)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="introduction.html" class="sidebar-link">
+              <span>১. পরিচিতি ও ওভারভিউ</span>
+              <span class="sidebar-tag">Intro</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">কোর কনসেপ্টস (Core Concepts)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="authentication-vs-authorization.html" class="sidebar-link">
+              <span>২. AuthN vs AuthZ</span>
+              <span class="sidebar-tag">Core</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="jwt-structure.html" class="sidebar-link">
+              <span>৩. JWT Structure ও Claims</span>
+              <span class="sidebar-tag">JWT</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">ইমপ্লিমেন্টেশন (.NET Web API)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="aspnet-core-setup.html" class="sidebar-link">
+              <span>৪. ASP.NET Core Setup</span>
+              <span class="sidebar-tag">API</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="token-generation.html" class="sidebar-link">
+              <span>৫. Token Generation</span>
+              <span class="sidebar-tag">C#</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="role-based-authorization.html" class="sidebar-link">
+              <span>৬. Role Authorization</span>
+              <span class="sidebar-tag">Security</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="refresh-token.html" class="sidebar-link active">
+              <span>৭. Refresh Token Flow</span>
+              <span class="sidebar-tag">Auth</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="docs-content">
+      <nav class="breadcrumbs">
+        <a href="introduction.html">Docs</a>
+        <span class="separator">/</span>
+        <span>ইমপ্লিমেন্টেশন</span>
+        <span class="separator">/</span>
+        <span style="color: var(--text-primary);">Refresh Token Flow</span>
+      </nav>
+
+      <article class="article-header">
+        <h1 class="article-title">Refresh Token Flow & Architecture</h1>
+        <div class="article-meta">
+          <div class="meta-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>পড়ার সময়: ৮ মিনিট</span>
+          </div>
+          <div class="meta-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>মডিউল: ০৭</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 1. এটা কী? -->
+      <h2 id="what-is-it">১. এটা কী? (What is a Refresh Token?)</h2>
+      <p>আমরা জানি যে নিরাপত্তার স্বার্থে <strong>Access Token</strong>-এর মেয়াদ খুব কম রাখা হয় (যেমন: ১৫ মিনিট বা ৩০ মিনিট)। কিন্তু ১৫ মিনিট পরপর যদি ইউজারের সামনে লগইন পপআপ আসে আর পাসওয়ার্ড দিতে বলে, তাহলে ইউজারের বিরক্তি চরমে পৌঁছাবে!</p>
+      <p>এই সমস্যার সমাধান হলো <strong>Refresh Token</strong>। এটি একটি স্পেশাল, দীর্ঘমেয়াদী এবং সুরক্ষিত সিক্রেট টোকেন (যেমন: ৭ দিন বা ৩০ দিন মেয়াদী), যা ব্যবহার করে ক্লায়েন্ট কোনো ইউজার ইন্টারঅ্যাকশন ছাড়াই ব্যাকগ্রাউন্ডে সার্ভার থেকে একদম নতুন একটি <code>Access Token</code> সংগ্রহ করতে পারে।</p>
+
+      <!-- 2. কেন দরকার? -->
+      <h2 id="why-needed">২. কেন দরকার? (Why do we need it?)</h2>
+      <ul>
+        <li><strong>টোকেন চুরির ঝুঁকি কমানো:</strong> Access Token প্রতি রিকোয়েস্টের সাথে নেটওয়ার্কে ট্রাভেল করে। যদি কোনো হ্যাকার Man-in-the-middle অ্যাটাকে Access Token চুরিও করে, ১৫ মিনিট পর তা অকেজো হয়ে যাবে।</li>
+        <li><strong>তাত্ক্ষণিক এক্সেস বাতিল (Revocation):</strong> সাধারণ JWT স্টেটলেস হওয়ায় মেয়াদ শেষ না হওয়া পর্যন্ত সার্ভার চাইলে কোনো ইউজারকে তাত্ক্ষণিক লগআউট করতে পারে না। কিন্তু Refresh Token সার্ভারের <em>Database</em>-এ সংরক্ষিত থাকে। তাই কোনো ইউজারকে ব্যান করতে চাইলে বা পাসওয়ার্ড চেঞ্জ হলে সার্ভার ডাটাবেস থেকে Refresh Token ডিলিট/রিভোক করে দিলেই তার পুরো সেশন বন্ধ হয়ে যায়!</li>
+        <li><strong>নিরবচ্ছিন্ন ইউজার এক্সপেরিয়েন্স (Seamless UX):</strong> ইউজার অ্যাপ ব্যবহার করছে, ব্যাকগ্রাউন্ডে টোকেন রিফ্রেশ হয়ে যাচ্ছে—ইউজার বুঝতেই পারবে না।</li>
+      </ul>
+
+      <!-- 3. এটা কীভাবে কাজ করে? -->
+      <h2 id="how-it-works">৩. এটা কীভাবে কাজ করে? (How does it work?)</h2>
+      <ol>
+        <li><strong>প্রথম লগইন:</strong> ইউজার লগইন করলে সার্ভার দুটো জিনিস রিটার্ন করে:
+          <ul>
+            <li><code>Access Token</code> (১৫ মিনিট মেয়াদের JWT)</li>
+            <li><code>Refresh Token</code> (৭ দিনের জন্য একটি ক্রিপ্টোগ্রাফিক র‍্যান্ডম স্ট্রিং, যা ডেটাবেসেও সেভ থাকে)</li>
+          </ul>
+        </li>
+        <li><strong>স্বাভাবিক রিকোয়েস্ট:</strong> ক্লায়েন্ট প্রতিটা API কল-এ এই <code>Access Token</code> পাঠিয়ে ডাটা আনা-নেওয়া করে।</li>
+        <li><strong>টোকেন এক্সপায়ার হলে (401):</strong> ১৫ মিনিট পর Access Token এক্সপায়ার হলে সার্ভার <code>401 Unauthorized</code> দেয়।</li>
+        <li><strong>Silent Refresh:</strong> ফ্রন্টএন্ডের HTTP Interceptor এই 401 ধরা মাত্রই ইউজারের অগোচরে <code>/api/auth/refresh-token</code> এন্ডপয়েন্টে তার <code>Refresh Token</code> পাঠায়।</li>
+        <li><strong>নতুন টোকেন প্রদান:</strong> সার্ভার ডেটাবেস চেক করে দেখে Refresh Token-টি ভ্যালিড কি না। ভ্যালিড হলে সার্ভার নতুন একটি Access Token এবং নতুন একটি Refresh Token ইস্যু করে (টোকেন রোটেশন)।</li>
+      </ol>
+
+      <!-- 4. বাস্তব জীবনের উদাহরণ -->
+      <h2 id="real-life-example">৪. বাস্তব জীবনের উদাহরণ (Real-Life Example)</h2>
+      <div class="callout callout-realworld">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20"></path><path d="M20 12l-4-4"></path><path d="M20 12l-4 4"></path></svg>
+          অ্যামিউজমেন্ট পার্কের ডে-পাস ও হোটেল কি-কার্ড
+        </div>
+        <div class="callout-body">
+          <p>ধরো তুমি একটি রিসোর্ট পার্কে গিয়েছো। রিসোর্টের মেইন ডেস্কে তোমার পাসপোর্ট দেখিয়ে তুমি একটি স্পেশাল <strong>রিসোর্ট মেম্বারশিপ কার্ড</strong> নিলে যা ৭ দিন ভ্যালিড (এটা হলো <strong>Refresh Token</strong>)।</p>
+          <p>কিন্তু পার্কের রোলারকোস্টারে চড়ার জন্য তোমাকে দেওয়া হয় কাগজের ছোট <strong>রাইড কুপন</strong> যার মেয়াদ মাত্র ১ ঘণ্টা (এটা হলো <strong>Access Token</strong>)। কুপন হারিয়ে গেলে বা ভিজে নষ্ট হয়ে গেলেও সমস্যা নেই—তুমি রিসোর্ট কার্ড দেখিয়ে ইনফরমেশন বুথ থেকে সাথে সাথে নতুন রাইড কুপন নিয়ে নিতে পারছো।</p>
+        </div>
+      </div>
+
+      <!-- 5. Code example -->
+      <h2 id="code-example">৫. কোড এক্সাম্পল (Model ও Refresh Endpoint)</h2>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>Controllers/AuthController.cs (RefreshToken)</span>
+          </div>
+          <button class="copy-code-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Copy Code</span>
+          </button>
+        </div>
+        <div class="code-content">
+<pre><code><span class="token-keyword">using</span> System.Security.Cryptography;
+<span class="token-keyword">using</span> Microsoft.AspNetCore.Mvc;
+
+<span class="token-keyword">public class</span> <span class="token-type">RefreshTokenRequestDto</span>
+{
+    <span class="token-keyword">public string</span> AccessToken { <span class="token-keyword">get</span>; <span class="token-keyword">set</span>; } = <span class="token-keyword">string</span>.Empty;
+    <span class="token-keyword">public string</span> RefreshToken { <span class="token-keyword">get</span>; <span class="token-keyword">set</span>; } = <span class="token-keyword">string</span>.Empty;
+}
+
+[<span class="token-attribute">HttpPost</span>(<span class="token-string">"refresh-token"</span>)]
+<span class="token-keyword">public async</span> <span class="token-type">Task</span>&lt;<span class="token-type">IActionResult</span>&gt; <span class="token-function">RefreshToken</span>([<span class="token-attribute">FromBody</span>] <span class="token-type">RefreshTokenRequestDto</span> dto)
+{
+    <span class="token-comment">// ১. ডাটাবেস থেকে রিফ্রেশ টোকেন মিলিয়ে ইউজার খুঁজে বের করা</span>
+    <span class="token-type">var</span> user = <span class="token-keyword">await</span> _dbContext.Users
+        .<span class="token-function">FirstOrDefaultAsync</span>(u =&gt; u.RefreshToken == dto.RefreshToken);
+
+    <span class="token-comment">// ২. টোকেন বিদ্যমান এবং মেয়াদ আছে কি না যাচাই করা</span>
+    <span class="token-keyword">if</span> (user == <span class="token-keyword">null</span> || user.RefreshTokenExpiryTime &lt;= DateTime.UtcNow)
+    {
+        <span class="token-keyword">return</span> <span class="token-function">Unauthorized</span>(<span class="token-keyword">new</span> { message = <span class="token-string">"রিফ্রেশ টোকেন অকার্যকর বা মেয়াদোত্তীর্ণ! পুনরায় লগইন করুন।"</span> });
+    }
+
+    <span class="token-comment">// ৩. নতুন Access Token তৈরি</span>
+    <span class="token-type">var</span> newAccessToken = _jwtTokenService.<span class="token-function">GenerateToken</span>(user);
+
+    <span class="token-comment">// ৪. সিকিউরিটি বেস্ট প্র্যাকটিস: Token Rotation (নতুন Refresh Token তৈরি ও আপডেট)</span>
+    <span class="token-type">var</span> newRefreshToken = <span class="token-function">GenerateSecureRandomToken</span>();
+    user.RefreshToken = newRefreshToken;
+    user.RefreshTokenExpiryTime = DateTime.UtcNow.<span class="token-function">AddDays</span>(7);
+    <span class="token-keyword">await</span> _dbContext.<span class="token-function">SaveChangesAsync</span>();
+
+    <span class="token-keyword">return</span> <span class="token-function">Ok</span>(<span class="token-keyword">new</span>
+    {
+        accessToken = newAccessToken,
+        refreshToken = newRefreshToken
+    });
+}
+
+<span class="token-comment">// ক্রিপ্টোগ্রাফিক্যালি স্ট্রং র‍্যান্ডম টোকেন জেনারেটর</span>
+<span class="token-keyword">private string</span> <span class="token-function">GenerateSecureRandomToken</span>()
+{
+    <span class="token-type">var</span> randomNumber = <span class="token-keyword">new byte</span>[64];
+    <span class="token-keyword">using</span> <span class="token-type">var</span> rng = RandomNumberGenerator.<span class="token-function">Create</span>();
+    rng.<span class="token-function">GetBytes</span>(randomNumber);
+    <span class="token-keyword">return</span> Convert.<span class="token-function">ToBase64String</span>(randomNumber);
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- 6. Code line-by-line explanation -->
+      <h2 id="line-by-line">৬. কোডের লাইন-বাই-লাইন ব্যাখ্যা</h2>
+      <div class="breakdown-card">
+        <div class="breakdown-item">
+          <span class="breakdown-code">RandomNumberGenerator.Create()</span>
+          <span class="breakdown-desc">রিফ্রেশ টোকেন সাধারণত কোনো JWT নয়—এটি একটি অতি সুরক্ষিত, ক্রিপ্টোগ্রাফিক র‍্যান্ডম স্ট্রিং যাতে কেউ অনুমান করতে না পারে।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">user.RefreshTokenExpiryTime &lt;= DateTime.UtcNow</span>
+          <span class="breakdown-desc">সার্ভারের ডেটাবেসে থাকা মেয়াদের সাথে বর্তমান সময় তুলনা করে নিশ্চিত করা হচ্ছে যে রিফ্রেশ টোকেনের ৭ দিনের মেয়াদ এখনও পার হয়নি।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">Token Rotation (user.RefreshToken = newRefreshToken)</span>
+          <span class="breakdown-desc">এটি একটি অত্যন্ত গুরুত্বপূর্ণ সিকিউরিটি টেকনিক! প্রতিবার যখন ইউজার রিফ্রেশ টোকেন ব্যবহার করে, পুরনো রিফ্রেশ টোকেন বাতিল করে একদম ব্র্যান্ড-নিউ একটি রিফ্রেশ টোকেন ডাটাবেসে সেভ করা হয়। এর ফলে একই রিফ্রেশ টোকেন দিয়ে কেউ একাধিকবার সুযোগ নিতে পারে না।</span>
+        </div>
+      </div>
+
+      <!-- 7. Common mistakes -->
+      <h2 id="common-mistakes">৭. কমন ভুলগুলো (Common Mistakes)</h2>
+      <div class="callout callout-mistake">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          রিফ্রেশ টোকেন ইমপ্লিমেন্টেশনে কমন ভুল:
+        </div>
+        <div class="callout-body">
+          <ul style="margin-bottom:0;">
+            <li><strong>টোকেন রোটেশন না করা:</strong> একবার রিফ্রেশ টোকেন দিয়ে আজীবন নতুন এক্সেস টোকেন দেওয়া ভয়ংকর বিপজ্জনক। সবসময় একবার ব্যবহারের পরই পুরনো রিফ্রেশ টোকেন বদলে ফেলতে হবে।</li>
+            <li><strong>ব্রাউজারের খোলা localStorage-এ রাখা:</strong> রিফ্রেশ টোকেন ফ্রন্টএন্ডে সবচেয়ে নিরাপদে রাখা যায় <strong>HttpOnly Cookie</strong>-র মধ্যে, যাতে কোনো ক্ষতিকর XSS জাভাস্ক্রিপ্ট স্ক্রিপ্ট এটি চুরি করতে না পারে।</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 8. Short summary -->
+      <h2 id="short-summary">৮. শর্ট সামারি (Short Summary)</h2>
+      <div class="callout callout-summary">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          রিফ্রেশ টোকেনের মূল রহস্য:
+        </div>
+        <div class="callout-body">
+          <p>১. Access Token কম সময় বাঁচে (১৫-৩০ মিনিট), Refresh Token বেশি সময় বাঁচে (৭ দিন)।</p>
+          <p>২. Refresh Token ডাটাবেসে সেভ থাকে, তাই সার্ভার যেকোনো মুহূর্তে ইউজারের সেশন বাতিল (Revoke) করতে পারে।</p>
+          <p>৩. Token Rotation ব্যবহারের মাধ্যমে হ্যাকিং ও সেশন হাইজ্যাকিং প্রতিহত করা যায়।</p>
+        </div>
+      </div>
+
+      <!-- Navigation Footer -->
+      <div class="docs-nav-footer">
+        <a href="role-based-authorization.html" class="nav-card">
+          <span class="nav-card-label">&larr; পূর্ববর্তী চ্যাপ্টার</span>
+          <span class="nav-card-title">Role Authorization</span>
+        </a>
+        <a href="introduction.html" class="nav-card next">
+          <span class="nav-card-label">শুরুতে ফিরে যান &rarr;</span>
+          <span class="nav-card-title">পরিচিতি ও ওভারভিউ</span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <!-- Search Modal -->
+  <div class="search-modal-backdrop" id="searchModalBackdrop">
+    <div class="search-modal">
+      <div class="search-input-wrapper">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" placeholder="ডকুমেন্টেশনে সার্চ করুন (যেমন: JWT, Claims, Roles)..." autocomplete="off">
+      </div>
+      <div class="search-results" id="searchResults">
+        <!-- Injected via JavaScript -->
+      </div>
+      <div class="search-footer">
+        <span>ন্যাভিগেশনের জন্য <kbd>↑</kbd> <kbd>↓</kbd> ও সিলেক্ট করতে <kbd>Enter</kbd> চাপুন</span>
+        <span>বন্ধ করতে <kbd>Esc</kbd></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>পরিচিতি ও ওভারভিউ | JWT Auth Docs</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="top-header">
+    <div class="header-left">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a href="introduction.html" class="brand-logo">
+        <div class="brand-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <span>JWT Auth Docs</span>
+        <span class="brand-badge">.NET 8</span>
+      </a>
+    </div>
+
+    <div class="header-right">
+      <button class="search-btn" id="searchBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <span>টপিক সার্চ করুন...</span>
+        <span class="search-shortcut">Ctrl K</span>
+      </button>
+
+      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+        <!-- Sun/Moon icon injected by JS -->
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="docs-container">
+    <div class="sidebar-overlay"></div>
+
+    <!-- Left Sidebar -->
+    <aside class="docs-sidebar">
+      <div class="sidebar-group">
+        <div class="group-title">শুরুর কথা (Getting Started)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="introduction.html" class="sidebar-link active">
+              <span>১. পরিচিতি ও ওভারভিউ</span>
+              <span class="sidebar-tag">Intro</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">কোর কনসেপ্টস (Core Concepts)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="authentication-vs-authorization.html" class="sidebar-link">
+              <span>২. AuthN vs AuthZ</span>
+              <span class="sidebar-tag">Core</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="jwt-structure.html" class="sidebar-link">
+              <span>৩. JWT Structure ও Claims</span>
+              <span class="sidebar-tag">JWT</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">ইমপ্লিমেন্টেশন (.NET Web API)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="aspnet-core-setup.html" class="sidebar-link">
+              <span>৪. ASP.NET Core Setup</span>
+              <span class="sidebar-tag">API</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="token-generation.html" class="sidebar-link">
+              <span>৫. Token Generation</span>
+              <span class="sidebar-tag">C#</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="role-based-authorization.html" class="sidebar-link">
+              <span>৬. Role Authorization</span>
+              <span class="sidebar-tag">Security</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="refresh-token.html" class="sidebar-link">
+              <span>৭. Refresh Token Flow</span>
+              <span class="sidebar-tag">Auth</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="docs-content">
+      <nav class="breadcrumbs">
+        <a href="introduction.html">Docs</a>
+        <span class="separator">/</span>
+        <span>শুরুর কথা</span>
+        <span class="separator">/</span>
+        <span style="color: var(--text-primary);">পরিচিতি ও ওভারভিউ</span>
+      </nav>
+
+      <article class="article-header">
+        <h1 class="article-title">JWT Authentication ও Authorization পরিচিতি</h1>
+        <div class="article-meta">
+          <div class="meta-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>পড়ার সময়: ৪ মিনিট</span>
+          </div>
+          <div class="meta-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <span>মডিউল: ০১</span>
+          </div>
+        </div>
+      </article>
+
+      <div class="callout callout-concept">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          স্বাগতম! কেন এই ডকুমেন্টেশন?
+        </div>
+        <div class="callout-body">
+          <p>ওয়েব ডেভেলপমেন্টে বিশেষ করে আধুনিক Backend ও RESTful API তৈরিতে <strong>Authentication</strong> এবং <strong>Authorization</strong> সবচেয়ে ক্রুশিয়াল পার্ট। কিন্তু অনলাইনে বেশিরভাগ টিউটোরিয়াল হয় অতিরিক্ত অ্যাকাডেমিক, নয়তো জটিল ভাষায় লেখা।</p>
+          <p>এই ডকুমেন্টেশনের উদ্দেশ্য খুব সিম্পল: একজন সিএসই স্টুডেন্ট বা ডেভেলপার যেভাবে তার ফ্রেন্ডকে কোনো জটিল কনসেপ্ট সহজে বাংলায় বুঝিয়ে দেয়, ঠিক সেভাবেই আমরা শুরু থেকে শেষ পর্যন্ত পুরো সিকিউরিটি আর্কিটেকচার শিখব।</p>
+        </div>
+      </div>
+
+      <h2>আমরা কী কী শিখব?</h2>
+      <p>আমরা ধাপে ধাপে একদম ফাউন্ডেশন থেকে শুরু করে প্রোডাকশন-লেভেলের ইমপ্লিমেন্টেশন পর্যন্ত কভার করব:</p>
+
+      <ul>
+        <li><strong>Authentication vs Authorization:</strong> পরিচয় যাচাই আর পারমিশন চেক করার ভেতরকার ফান্ডামেন্টাল পার্থক্য।</li>
+        <li><strong>JWT (JSON Web Token) Deep Dive:</strong> টোকেনের ভেতরের তিনটি অংশ—Header, Payload ও Signature কীভাবে ক্রিপ্টোগ্রাফিক্যালি কাজ করে।</li>
+        <li><strong>Claims & Identity:</strong> User ID, Role বা পারমিশন কীভাবে টোকেনের ভেতরে Claim আকারে সুরক্ষিত রাখতে হয়।</li>
+        <li><strong>ASP.NET Core Web API Integration:</strong> <code>Program.cs</code> ফাইলে Dependency Injection ও Middleware কনফিগার করা।</li>
+        <li><strong>Controller & Token Generation:</strong> Login DTO ভ্যালিডেশন এবং ক্লায়েন্টে সুরক্ষিত টোকেন রিটার্ন করা।</li>
+        <li><strong>Role-based Authorization:</strong> <code>[Authorize(Roles = "Admin")]</code> দিয়ে সুরক্ষিত Endpoint বানানো।</li>
+        <li><strong>Refresh Token মেকানিজম:</strong> Access Token এক্সপায়ার হলে বারবার লগইন ছাড়া সেশন সচল রাখার বেস্ট প্র্যাকটিস।</li>
+      </ul>
+
+      <h2>প্রতিটি টপিকের ফরম্যাট</h2>
+      <p>পুরো গাইডে প্রতিটি চ্যাপ্টার একই ধারাবাহিক ৮টি ধাপে সাজানো হয়েছে যাতে পড়তে সুবিধা হয়:</p>
+
+      <div class="breakdown-card">
+        <div class="breakdown-item">
+          <span class="breakdown-code">১. এটা কী?</span>
+          <span class="breakdown-desc">কনসেপ্টের একদম সহজ ও প্রাঞ্জল সংজ্ঞা।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">২. কেন দরকার?</span>
+          <span class="breakdown-desc">এটা ব্যবহার না করলে কী সমস্যা হতে পারে এবং কেন এটা সমাধান দেয়।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">৩. কীভাবে কাজ করে?</span>
+          <span class="breakdown-desc">বিহাইন্ড দ্য সিন বা ইন্টারনাল ফ্লো।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">৪. বাস্তব জীবনের উদাহরণ</span>
+          <span class="breakdown-desc">ডেইলি লাইফের কোনো সিচুয়েশনের সাথে মিলিয়ে কনসেপ্ট ফিল করা।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">৫. কোড এক্সাম্পল</span>
+          <span class="breakdown-desc">C# এবং ASP.NET Core-এ একদম ক্লিন কোড স্নিপেট।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">৬. কোডের লাইন-বাই-লাইন ব্যাখ্যা</span>
+          <span class="breakdown-desc">প্রতিটি মেথড ও ক্লাসের বিস্তারিত বাংলা ব্যাখ্যা।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">৭. কমন ভুলগুলো</span>
+          <span class="breakdown-desc">নতুন ডেভেলপাররা সচরাচর যে সব বাগ বা সিকিউরিটি ভুল করে থাকে।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">৮. শর্ট সামারি</span>
+          <span class="breakdown-desc">এক নজরে মনে রাখার মতো গুরুত্বপূর্ণ টেক-অ্যাওয়ে।</span>
+        </div>
+      </div>
+
+      <!-- Navigation Footer -->
+      <div class="docs-nav-footer">
+        <div></div>
+        <a href="authentication-vs-authorization.html" class="nav-card next">
+          <span class="nav-card-label">পরবর্তী চ্যাপ্টার &rarr;</span>
+          <span class="nav-card-title">Authentication vs Authorization</span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <!-- Search Modal -->
+  <div class="search-modal-backdrop" id="searchModalBackdrop">
+    <div class="search-modal">
+      <div class="search-input-wrapper">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" placeholder="ডকুমেন্টেশনে সার্চ করুন (যেমন: JWT, Claims, Roles)..." autocomplete="off">
+      </div>
+      <div class="search-results" id="searchResults">
+        <!-- Injected via JavaScript -->
+      </div>
+      <div class="search-footer">
+        <span>ন্যাভিগেশনের জন্য <kbd>↑</kbd> <kbd>↓</kbd> ও সিলেক্ট করতে <kbd>Enter</kbd> চাপুন</span>
+        <span>বন্ধ করতে <kbd>Esc</kbd></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JWT Structure ও Claims Deep Dive | JWT Auth Docs</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="top-header">
+    <div class="header-left">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a href="introduction.html" class="brand-logo">
+        <div class="brand-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <span>JWT Auth Docs</span>
+        <span class="brand-badge">.NET 8</span>
+      </a>
+    </div>
+
+    <div class="header-right">
+      <button class="search-btn" id="searchBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <span>টপিক সার্চ করুন...</span>
+        <span class="search-shortcut">Ctrl K</span>
+      </button>
+
+      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+        <!-- Sun/Moon icon injected by JS -->
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="docs-container">
+    <div class="sidebar-overlay"></div>
+
+    <!-- Left Sidebar -->
+    <aside class="docs-sidebar">
+      <div class="sidebar-group">
+        <div class="group-title">শুরুর কথা (Getting Started)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="introduction.html" class="sidebar-link">
+              <span>১. পরিচিতি ও ওভারভিউ</span>
+              <span class="sidebar-tag">Intro</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">কোর কনসেপ্টস (Core Concepts)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="authentication-vs-authorization.html" class="sidebar-link">
+              <span>২. AuthN vs AuthZ</span>
+              <span class="sidebar-tag">Core</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="jwt-structure.html" class="sidebar-link active">
+              <span>৩. JWT Structure ও Claims</span>
+              <span class="sidebar-tag">JWT</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">ইমপ্লিমেন্টেশন (.NET Web API)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="aspnet-core-setup.html" class="sidebar-link">
+              <span>৪. ASP.NET Core Setup</span>
+              <span class="sidebar-tag">API</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="token-generation.html" class="sidebar-link">
+              <span>৫. Token Generation</span>
+              <span class="sidebar-tag">C#</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="role-based-authorization.html" class="sidebar-link">
+              <span>৬. Role Authorization</span>
+              <span class="sidebar-tag">Security</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="refresh-token.html" class="sidebar-link">
+              <span>৭. Refresh Token Flow</span>
+              <span class="sidebar-tag">Auth</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="docs-content">
+      <nav class="breadcrumbs">
+        <a href="introduction.html">Docs</a>
+        <span class="separator">/</span>
+        <span>কোর কনসেপ্টস</span>
+        <span class="separator">/</span>
+        <span style="color: var(--text-primary);">JWT Structure ও Claims</span>
+      </nav>
+
+      <article class="article-header">
+        <h1 class="article-title">JWT Structure ও Claims Deep Dive</h1>
+        <div class="article-meta">
+          <div class="meta-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>পড়ার সময়: ৭ মিনিট</span>
+          </div>
+          <div class="meta-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>মডিউল: ০৩</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 1. এটা কী? -->
+      <h2 id="what-is-jwt">১. এটা কী? (What is JWT?)</h2>
+      <p><strong>JWT</strong>-এর পূর্ণরূপ হলো <strong>JSON Web Token</strong>। এটি একটি ওপেন স্ট্যান্ডার্ড (RFC 7519) যা দুই পক্ষের (যেমন: তোমার React/Angular ক্লায়েন্ট এবং ASP.NET Core সার্ভার) মধ্যে সিকিউরভাবে তথ্য আদান-প্রদান করতে ব্যবহৃত হয়।</p>
+      
+      <p>আর <strong>Claim</strong> কী? Claim হলো সহজ ভাষায় <em>user সম্পর্কে কিছু information</em>, যেমন User ID, Email, Role ইত্যাদি। টোকেন তৈরি করার সময় সার্ভার ইউজারের এসব তথ্য টোকেনের ভেতরে Claim হিসেবে গুঁজে দেয়।</p>
+
+      <div class="callout callout-concept">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          JWT দেখতে কেমন হয়?
+        </div>
+        <div class="callout-body">
+          <p>একটি JWT টোকেন দেখতে তিনটি ডট (<code>.</code>) দিয়ে বিভক্ত একটি বড় স্ট্রিং-এর মতো দেখায়:</p>
+          <p style="word-break: break-all; font-family:'JetBrains Mono',monospace; font-size:0.88rem; background:var(--code-bg); color:var(--code-text); padding:0.6rem 0.8rem; border-radius:6px;">
+            <span style="color:#f43f5e;">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</span>.<span style="color:#c084fc;">eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiUmFoaW0iLCJyb2xlIjoiQWRtaW4ifQ</span>.<span style="color:#38bdf8;">TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ</span>
+          </p>
+          <p style="margin-top:0.5rem; margin-bottom:0;">এখানে লাল অংশটি <strong>Header</strong>, বেগুনি অংশটি <strong>Payload</strong> এবং নীল অংশটি হলো <strong>Signature</strong>।</p>
+        </div>
+      </div>
+
+      <!-- 2. কেন দরকার? -->
+      <h2 id="why-jwt">২. কেন দরকার? (Why do we need JWT?)</h2>
+      <p>আগের দিনের ট্রেডিশনাল ওয়েব অ্যাপ্লিকেশনে <strong>Session-based Authentication</strong> ব্যবহার করা হতো। সেখানে সার্ভারের মেমোরিতে বা ডেটাবেসে প্রত্যেকটি ইউজারের Session ID স্টোর করে রাখা লাগত। কিন্তু আধুনিক স্কেলেবল সিস্টেমে এর বেশ কিছু অসুবিধা আছে:</p>
+      <ul>
+        <li><strong>সার্ভারের মেমোরি খরচ:</strong> ১০ লাখ ইউজার একসাথে লগইন থাকলে সার্ভারের RAM-এ ১০ লাখ সেশন ধরে রাখতে হয়।</li>
+        <li><strong>Microservices ও Load Balancing-এ ঝামেলা:</strong> যখন একাধিক সার্ভার থাকে (Load Balancer-এর পেছনে), তখন Server A-তে লগইন করা ইউজারের রিকোয়েস্ট Server B-তে গেলে সে ইউজারকে চিনতে পারে না (Sticky Session ছাড়া)।</li>
+        <li><strong>মোবাইল অ্যাপস ও ক্রস-ডোমেইন ফ্রেন্ডলি নয়:</strong> সেশন কুকির ওপর নির্ভরশীল, যা বিভিন্ন থার্ড-পার্টি সার্ভিস বা মোবাইল অ্যাপে সহজে কাজ করে না।</li>
+      </ul>
+      <p><strong>JWT হচ্ছে Stateless (সার্ভারহীন স্মৃতি):</strong> সার্ভার টোকেন ইস্যু করার পর নিজের মেমোরিতে কিছুই জমিয়ে রাখে না! ইউজার নিজেই তার টোকেন বহন করে আনে। সার্ভার শুধু Signature চেক করে নিশ্চিত হয় টোকেনটি আসল কি না। ফলে ব্যাকএন্ড সার্ভার আনলিমিটেড স্কেল করা যায়।</p>
+
+      <!-- 3. এটা কীভাবে কাজ করে? -->
+      <h2 id="how-it-works">৩. এটা কীভাবে কাজ করে? (How does it work?)</h2>
+      <p>একটি JWT টোকেন মূলত ৩টি পার্ট নিয়ে গঠিত:</p>
+
+      <div class="breakdown-card">
+        <div class="breakdown-item">
+          <span class="breakdown-code" style="color:#f43f5e;">১. Header (হেডার)</span>
+          <span class="breakdown-desc">এতে টোকেনের মেটাডাটা থাকে—টোকেনের টাইপ (JWT) এবং কোন অ্যালগোরিদম দিয়ে Signature করা হয়েছে (যেমন: HMAC SHA256 বা RSA)।</span>
+        </div>
+        <div class="breakdown-item" id="jwt-payload">
+          <span class="breakdown-code" style="color:#c084fc;">২. Payload (পে-লোড)</span>
+          <span class="breakdown-desc">এখানেই মূল তথ্য বা <strong>Claims</strong> থাকে (যেমন: User ID, Name, Role, Token Expiration Time)। এটি Base64Url দিয়ে এনকোড করা থাকে, তাই যে কেউ এটা ডিকোড করে ভেতরের তথ্য পড়তে পারে।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code" style="color:#38bdf8;">৩. Signature (ডিজিটাল স্বাক্ষর)</span>
+          <span class="breakdown-desc">এটিই টোকেনকে সুরক্ষিত করে! সার্ভার তার নিজস্ব গোপন চাবি (<strong>Secret Key</strong>) দিয়ে <code>Header</code> এবং <code>Payload</code>-কে হ্যাশ করে এই Signature তৈরি করে। যদি কোনো হ্যাকার Payload-এর ভেতরের Role পরিবর্তন করে "Admin" বানাতে চায়, তাহলে Signature মিসম্যাচ হয়ে যাবে এবং সার্ভার সাথে সাথে রিকোয়েস্ট বাতিল করবে!</span>
+        </div>
+      </div>
+
+      <!-- 4. একটা সহজ real-life example -->
+      <h2 id="real-life-example">৪. একটা সহজ বাস্তব উদাহরণ (Real-Life Example)</h2>
+      <div class="callout callout-realworld">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          বিশ্ববিদ্যালয়ের সিলমোহর মারা প্রশংসাপত্র বা সার্টিফিকেট
+        </div>
+        <div class="callout-body">
+          <p>ধরো তুমি ভার্সিটি থেকে পাশ করার পর ভাইস চ্যান্সেলরের অফিশিয়াল সিল এবং স্পেশাল স্বাক্ষরিত একটি প্রশংসাপত্র (Certificate) নিলে।</p>
+          <p>এই সার্টিফিকেটের ভেতরে তোমার নাম, সিজিপিএ এবং ডিপার্টমেন্ট স্পষ্টভাবে লেখা আছে (এটা হলো <strong>Payload</strong> বা <strong>Claims</strong>)। যে কেউ সার্টিফিকেট হাতে নিলেই পড়তে পারছে তুমি কোন ডিপার্টমেন্টের।</p>
+          <p>কিন্তু কেউ কি ইচ্ছে করলেই কলম দিয়ে সিজিপিএ ৩.০০ কেটে ৩.৯৯ বানিয়ে ফেলতে পারবে? পারবে হয়তো, কিন্তু নিচে যে বিশেষ সিকিউর সিলমোহর আর ভিসি স্যারের জেনুইন স্বাক্ষর আছে (এটা হলো <strong>Signature</strong>), চাকরিদাতা যখন সেই স্বাক্ষরের সাথে অফিশিয়াল সিলের মিল পাবে না, তখনই জালিয়াতি ধরা পড়ে যাবে!</p>
+          <p>সার্ভারের কাছেও এমন একটা স্পেশাল <strong>Secret Key</strong> থাকে যা অন্য কেউ জানে না। তাই ক্লায়েন্ট টোকেন নিয়ে এলেও কেউ ভেতরের তথ্য কারচুপি করতে পারে না।</p>
+        </div>
+      </div>
+
+      <!-- 5. Code example -->
+      <h2 id="code-example">৫. কোড এক্সাম্পল (C# / ASP.NET Core)</h2>
+      <p>নিচে C#-এ কীভাবে Claims সাজিয়ে একটি সিকিউর JWT টোকেন জেনারেট করতে হয় তার কোড দেখানো হলো:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>Services/JwtTokenService.cs</span>
+          </div>
+          <button class="copy-code-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Copy Code</span>
+          </button>
+        </div>
+        <div class="code-content">
+<pre><code><span class="token-keyword">using</span> System.IdentityModel.Tokens.Jwt;
+<span class="token-keyword">using</span> System.Security.Claims;
+<span class="token-keyword">using</span> System.Text;
+<span class="token-keyword">using</span> Microsoft.IdentityModel.Tokens;
+
+<span class="token-keyword">public class</span> <span class="token-type">JwtTokenService</span>
+{
+    <span class="token-keyword">private readonly</span> <span class="token-type">IConfiguration</span> _configuration;
+
+    <span class="token-keyword">public</span> <span class="token-function">JwtTokenService</span>(<span class="token-type">IConfiguration</span> configuration)
+    {
+        _configuration = configuration;
+    }
+
+    <span class="token-keyword">public string</span> <span class="token-function">GenerateToken</span>(<span class="token-type">User</span> user)
+    {
+        <span class="token-comment">// ১. Claims তৈরি করা (User-এর প্রয়োজনীয় তথ্য টোকেনে রাখা)</span>
+        <span class="token-type">var</span> claims = <span class="token-keyword">new</span> <span class="token-type">List</span>&lt;<span class="token-type">Claim</span>&gt;
+        {
+            <span class="token-keyword">new</span> <span class="token-function">Claim</span>(ClaimTypes.NameIdentifier, user.Id.<span class="token-function">ToString</span>()),
+            <span class="token-keyword">new</span> <span class="token-function">Claim</span>(ClaimTypes.Name, user.Username),
+            <span class="token-keyword">new</span> <span class="token-function">Claim</span>(ClaimTypes.Email, user.Email),
+            <span class="token-keyword">new</span> <span class="token-function">Claim</span>(ClaimTypes.Role, user.Role)
+        };
+
+        <span class="token-comment">// ২. appsettings.json থেকে Secret Key নিয়ে সিমেট্রিক কি তৈরি করা</span>
+        <span class="token-type">var</span> secretKey = _configuration[<span class="token-string">"JwtSettings:SecretKey"</span>];
+        <span class="token-type">var</span> key = <span class="token-keyword">new</span> <span class="token-function">SymmetricSecurityKey</span>(Encoding.UTF8.<span class="token-function">GetBytes</span>(secretKey));
+        <span class="token-type">var</span> credentials = <span class="token-keyword">new</span> <span class="token-function">SigningCredentials</span>(key, SecurityAlgorithms.HmacSha256);
+
+        <span class="token-comment">// ৩. Token Descriptor তৈরি করা</span>
+        <span class="token-type">var</span> tokenDescriptor = <span class="token-keyword">new</span> <span class="token-function">SecurityTokenDescriptor</span>
+        {
+            Subject = <span class="token-keyword">new</span> <span class="token-function">ClaimsIdentity</span>(claims),
+            Expires = DateTime.UtcNow.<span class="token-function">AddHours</span>(2),
+            Issuer = _configuration[<span class="token-string">"JwtSettings:Issuer"</span>],
+            Audience = _configuration[<span class="token-string">"JwtSettings:Audience"</span>],
+            SigningCredentials = credentials
+        };
+
+        <span class="token-comment">// ৪. টোকেন তৈরি ও স্ট্রিং-এ রূপান্তর</span>
+        <span class="token-type">var</span> tokenHandler = <span class="token-keyword">new</span> <span class="token-function">JwtSecurityTokenHandler</span>();
+        <span class="token-type">var</span> token = tokenHandler.<span class="token-function">CreateToken</span>(tokenDescriptor);
+
+        <span class="token-keyword">return</span> tokenHandler.<span class="token-function">WriteToken</span>(token);
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- 6. Code line-by-line explanation -->
+      <h2 id="line-by-line">৬. কোডের লাইন-বাই-লাইন ব্যাখ্যা</h2>
+      <p>চলো কোডের প্রতিটি সেকশন একদম পয়েন্ট আকারে বুঝে নেই:</p>
+
+      <div class="breakdown-card">
+        <div class="breakdown-item">
+          <span class="breakdown-code">new Claim(ClaimTypes.Role, user.Role)</span>
+          <span class="breakdown-desc">এখানে আমরা user-এর role-টা একটা claim হিসেবে JWT-এর মধ্যে রাখছি। যদি user-এর role <code>Admin</code> হয়, তাহলে পরে authorization-এর সময় server এই role information ব্যবহার করতে পারবে। প্রতি রিকোয়েস্টে আলাদা করে ডেটাবেসে গিয়ে "রহিম কি অ্যাডমিন?" কুয়েরি করতে হবে না।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())</span>
+          <span class="breakdown-desc">স্ট্যান্ডার্ড অনুযায়ী <code>NameIdentifier</code> ব্যবহার করা হয় ইউজারের ইউনিক প্রাইমারি কি (User ID) রাখার জন্য। পরবর্তীতে কন্ট্রোলারে <code>User.FindFirstValue(ClaimTypes.NameIdentifier)</code> দিয়ে সহজে ইউজারের আইডি পাওয়া যাবে।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))</span>
+          <span class="breakdown-desc">আমাদের সিক্রেট স্ট্রিং-কে বাইট অ্যারেতে রূপান্তর করে একটি ক্রিপ্টোগ্রাফিক কি তৈরি করা হচ্ছে। মনে রাখবে, এই কি-টি অন্তত ২৫৬ বিট (৩২ অক্ষর) লম্বা হওয়া উচিত।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">new SigningCredentials(key, SecurityAlgorithms.HmacSha256)</span>
+          <span class="breakdown-desc">এখানে আমরা বলছি: "সার্ভারের এই সিক্রেট কি দিয়ে এবং HMAC-SHA256 অ্যালগরিদম ব্যবহার করে টোকেনটিতে ডিজিটাল স্বাক্ষর (Signature) সিল মারো।"</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">Expires = DateTime.UtcNow.AddHours(2)</span>
+          <span class="breakdown-desc">টোকেনটির মেয়াদ নির্ধারণ করা হচ্ছে (যেমন: ২ ঘণ্টা)। মেয়াদ শেষ হয়ে গেলে টোকেন ইনভ্যালিড হয়ে যাবে এবং ইউজারকে রিফ্রেশ টোকেন দিয়ে নতুন টোকেন নিতে হবে।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">tokenHandler.WriteToken(token)</span>
+          <span class="breakdown-desc">অবজেক্ট আকারে তৈরি হওয়া টোকেনটিকে চূড়ান্তভাবে সেই ডট (<code>.</code>) সংযুক্ত তিনটি অংশের কমপ্যাক্ট স্ট্রিং-এ পরিণত করে ক্লায়েন্টের কাছে রিটার্ন করা হচ্ছে।</span>
+        </div>
+      </div>
+
+      <!-- 7. Common mistakes -->
+      <h2 id="common-mistakes">৭. কমন ভুলগুলো (Common Mistakes)</h2>
+      <div class="callout callout-mistake">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          JWT নিয়ে যেসব মারাত্মক ভুল কখনোই করা যাবে না:
+        </div>
+        <div class="callout-body">
+          <ul style="margin-bottom:0;">
+            <li><strong>Payload-এ পাসওয়ার্ড বা সেনসিটিভ ডেটা রাখা:</strong> মনে রাখবে, JWT টোকেন <em>এনক্রিপ্টেড নয়</em>, এটি শুধু <em>Base64Url এনকোডেড</em>। jwt.io-তে যে কেউ পেস্ট করলেই ভেতরের Payload দেখে ফেলতে পারবে। তাই পাসওয়ার্ড, পিন কোড বা ক্রেডিট কার্ড নম্বর ভুলেও Claims-এ রাখবে না!</li>
+            <li><strong>দুর্বল Secret Key ব্যবহার করা:</strong> Secret Key যদি হয় <code>"mysecret123"</code>, তাহলে ব্রুট-ফোর্স অ্যাটাক দিয়ে হ্যাকার সহজেই তোমার কি বের করে নকল টোকেন সাইন করে ফেলতে পারবে। সবসময় দীর্ঘ, কমপ্লেক্স সিক্রেট কি এনভায়রনমেন্ট ভ্যারিয়েবলে রাখবে।</li>
+            <li><strong>টোকেনের লাইফটাইম অতিরিক্ত বড় রাখা:</strong> Access Token-এর মেয়াদ ৭ দিন বা ১ মাস রাখা অত্যন্ত ঝুঁকিপূর্ণ। টোকেন চুরি হলে ওই সময় পর্যন্ত হ্যাকার সিস্টেমে ঢুকতে পারবে। Access Token সবসময় কম সময় (যেমন: ১৫ মিনিট থেকে ১ ঘণ্টা) রাখা উচিত এবং সাথে Refresh Token ব্যবহার করা উচিত।</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 8. Short summary -->
+      <h2 id="short-summary">৮. শর্ট সামারি (Short Summary)</h2>
+      <div class="callout callout-summary">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          এক নজরে মনে রাখার মতো ৩টি কথা:
+        </div>
+        <div class="callout-body">
+          <p>১. JWT মূলত ৩টি অংশ দিয়ে গঠিত: <code>Header.Payload.Signature</code>।</p>
+          <p>২. Claim হলো ইউজারের পরিচয় সম্পর্কিত তথ্য (যেমন: <code>ClaimTypes.NameIdentifier</code>, <code>ClaimTypes.Role</code>)।</p>
+          <p>৩. Signature-এর কারণে ক্লায়েন্ট বা হ্যাকার পে-লোডের ডেটা পরিবর্তন করতে পারে না। ডেটা পরিবর্তন করলেই সিগনেচার ফেইল করে।</p>
+        </div>
+      </div>
+
+      <!-- Navigation Footer -->
+      <div class="docs-nav-footer">
+        <a href="authentication-vs-authorization.html" class="nav-card">
+          <span class="nav-card-label">&larr; পূর্ববর্তী চ্যাপ্টার</span>
+          <span class="nav-card-title">Authentication vs Authorization</span>
+        </a>
+        <a href="aspnet-core-setup.html" class="nav-card next">
+          <span class="nav-card-label">পরবর্তী চ্যাপ্টার &rarr;</span>
+          <span class="nav-card-title">ASP.NET Core Setup ও Middleware</span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <!-- Search Modal -->
+  <div class="search-modal-backdrop" id="searchModalBackdrop">
+    <div class="search-modal">
+      <div class="search-input-wrapper">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" placeholder="ডকুমেন্টেশনে সার্চ করুন (যেমন: JWT, Claims, Roles)..." autocomplete="off">
+      </div>
+      <div class="search-results" id="searchResults">
+        <!-- Injected via JavaScript -->
+      </div>
+      <div class="search-footer">
+        <span>ন্যাভিগেশনের জন্য <kbd>↑</kbd> <kbd>↓</kbd> ও সিলেক্ট করতে <kbd>Enter</kbd> চাপুন</span>
+        <span>বন্ধ করতে <kbd>Esc</kbd></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+</body>
+</html>

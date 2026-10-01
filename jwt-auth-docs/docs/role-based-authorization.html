@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Role-based Authorization | JWT Auth Docs</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="top-header">
+    <div class="header-left">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a href="introduction.html" class="brand-logo">
+        <div class="brand-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <span>JWT Auth Docs</span>
+        <span class="brand-badge">.NET 8</span>
+      </a>
+    </div>
+
+    <div class="header-right">
+      <button class="search-btn" id="searchBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <span>টপিক সার্চ করুন...</span>
+        <span class="search-shortcut">Ctrl K</span>
+      </button>
+
+      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+        <!-- Sun/Moon icon injected by JS -->
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="docs-container">
+    <div class="sidebar-overlay"></div>
+
+    <!-- Left Sidebar -->
+    <aside class="docs-sidebar">
+      <div class="sidebar-group">
+        <div class="group-title">শুরুর কথা (Getting Started)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="introduction.html" class="sidebar-link">
+              <span>১. পরিচিতি ও ওভারভিউ</span>
+              <span class="sidebar-tag">Intro</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">কোর কনসেপ্টস (Core Concepts)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="authentication-vs-authorization.html" class="sidebar-link">
+              <span>২. AuthN vs AuthZ</span>
+              <span class="sidebar-tag">Core</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="jwt-structure.html" class="sidebar-link">
+              <span>৩. JWT Structure ও Claims</span>
+              <span class="sidebar-tag">JWT</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">ইমপ্লিমেন্টেশন (.NET Web API)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="aspnet-core-setup.html" class="sidebar-link">
+              <span>৪. ASP.NET Core Setup</span>
+              <span class="sidebar-tag">API</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="token-generation.html" class="sidebar-link">
+              <span>৫. Token Generation</span>
+              <span class="sidebar-tag">C#</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="role-based-authorization.html" class="sidebar-link active">
+              <span>৬. Role Authorization</span>
+              <span class="sidebar-tag">Security</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="refresh-token.html" class="sidebar-link">
+              <span>৭. Refresh Token Flow</span>
+              <span class="sidebar-tag">Auth</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="docs-content">
+      <nav class="breadcrumbs">
+        <a href="introduction.html">Docs</a>
+        <span class="separator">/</span>
+        <span>ইমপ্লিমেন্টেশন</span>
+        <span class="separator">/</span>
+        <span style="color: var(--text-primary);">Role Authorization</span>
+      </nav>
+
+      <article class="article-header">
+        <h1 class="article-title">Role-based ও Policy-based Authorization</h1>
+        <div class="article-meta">
+          <div class="meta-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>পড়ার সময়: ৭ মিনিট</span>
+          </div>
+          <div class="meta-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>মডিউল: ০৬</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 1. এটা কী? -->
+      <h2 id="what-is-it">১. এটা কী? (What is Role-based Authorization?)</h2>
+      <p><strong>Role-based Authorization (RBAC)</strong> হলো ইউজারের পদবী বা রোল (যেমন: <code>Admin</code>, <code>Teacher</code>, <code>Student</code>) অনুসারে নির্দিষ্ট API Endpoint বা ডেটায় এক্সেস নিয়ন্ত্রণ করার একটি পদ্ধতি।</p>
+      <p>আর যখন শুধু রোল যথেষ্ট হয় না, বরং জটিল শর্তের প্রয়োজন হয় (যেমন: "ইউজারের বয়স ১৮+ হতে হবে" অথবা "শুধুমাত্র ডিপার্টমেন্ট হেড হতে হবে"), তখন আমরা <strong>Policy-based Authorization</strong> ব্যবহার করি।</p>
+
+      <!-- 2. কেন দরকার? -->
+      <h2 id="why-needed">২. কেন দরকার? (Why do we need it?)</h2>
+      <p>একটি অ্যাপ্লিকেশনে সব ইউজারের অধিকার সমান নয়। টিচারের জন্য যে এন্ডপয়েন্টে গ্রেড ইনপুট দেওয়ার অনুমতি থাকবে, স্টুডেন্টের জন্য কেবল গ্রেড দেখার অনুমতি থাকবে। কন্ট্রোলারের মেথডে <code>if (user.Role == "Admin")</code> লিখে ম্যানুয়াল চেক করা কোডকে নোংরা করে। ASP.NET Core ডিক্লারেটিভ অ্যাট্রিবিউট <code>[Authorize(Roles = "...")]</code> দিয়ে খুব সহজেই ক্লিনভাবে এই নিরাপত্তা নিশ্চিত করে।</p>
+
+      <!-- 3. এটা কীভাবে কাজ করে? -->
+      <h2 id="how-it-works">৩. এটা কীভাবে কাজ করে? (How does it work?)</h2>
+      <ol>
+        <li>লগইনের সময় টোকেনের ভেতর <code>new Claim(ClaimTypes.Role, "Admin")</code> দিয়ে রোলটি সিল করা হয়েছিল।</li>
+        <li>যখন রিকোয়েস্ট আসে, <code>app.UseAuthentication()</code> টোকেন পড়ে ইউজারের আইডেন্টিটিতে সেই রোল লোড করে।</li>
+        <li>কন্ট্রোলারের ওপর থাকা <code>[Authorize(Roles = "Admin")]</code> মিডলওয়্যার চেক করে: <em>"ইউজারের রোলের তালিকায় কি 'Admin' আছে?"</em></li>
+        <li>থাকলে রিকোয়েস্ট সফলভাবে মেথডে ঢুকবে। না থাকলে সার্ভার সাথে সাথে <strong>HTTP 403 Forbidden</strong> পাঠিয়ে ক্লায়েন্টকে থামিয়ে দেবে।</li>
+      </ol>
+
+      <!-- 4. বাস্তব জীবনের উদাহরণ -->
+      <h2 id="real-life-example">৪. বাস্তব জীবনের উদাহরণ (Real-Life Example)</h2>
+      <div class="callout callout-realworld">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          অফিসের VIP লাউঞ্জ ও এক্সিকিউটিভ লিফট
+        </div>
+        <div class="callout-body">
+          <p>একটি বহুতল কর্পোরেট ভবনে সাধারণ কর্মীরা যেকোনো ফ্লোরে সাধারণ লিফট দিয়ে যেতে পারে। কিন্তু ১০ম তলায় রয়েছে <strong>"Board of Directors Lounge"</strong>। সেখানে লিফটের বাটনে চাপ দিলে লিফট কার্ড সোয়াইপ করতে বলে। শুধুমাত্র যাদের আইডি কার্ডে <strong>Executive / Director</strong> স্ট্যাটাস এনকোড করা আছে, তাদের জন্য লিফট ১০ম তলায় থামে, অন্যদের ক্ষেত্রে বাটন কাজই করে না!</p>
+          <p>ASP.NET Core-এর <code>[Authorize(Roles = "...")]</code> হলো ঠিক সেই এক্সিকিউটিভ লিফটের ফ্লোর রেস্ট্রিকশন।</p>
+        </div>
+      </div>
+
+      <!-- 5. Code example -->
+      <h2 id="code-example">৫. কোড এক্সাম্পল (C# Controller ও Program.cs Policy)</h2>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>Controllers/CoursesController.cs</span>
+          </div>
+          <button class="copy-code-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Copy Code</span>
+          </button>
+        </div>
+        <div class="code-content">
+<pre><code><span class="token-keyword">using</span> Microsoft.AspNetCore.Authorization;
+<span class="token-keyword">using</span> Microsoft.AspNetCore.Mvc;
+
+[<span class="token-attribute">ApiController</span>]
+[<span class="token-attribute">Route</span>(<span class="token-string">"api/[controller]"</span>)]
+<span class="token-keyword">public class</span> <span class="token-type">CoursesController</span> : <span class="token-type">ControllerBase</span>
+{
+    <span class="token-comment">// ১. যে কোনো লগইন করা ইউজার (Student, Teacher, Admin) কোর্স লিস্ট দেখতে পারবে</span>
+    [<span class="token-attribute">HttpGet</span>]
+    [<span class="token-attribute">Authorize</span>]
+    <span class="token-keyword">public</span> <span class="token-type">IActionResult</span> <span class="token-function">GetAllCourses</span>()
+    {
+        <span class="token-keyword">return</span> <span class="token-function">Ok</span>(<span class="token-keyword">new</span>[] { <span class="token-string">"Data Structures"</span>, <span class="token-string">"Algorithms"</span>, <span class="token-string">"Database Systems"</span> });
+    }
+
+    <span class="token-comment">// ২. কোর্স তৈরি করতে পারবে কেবল Teacher অথবা Admin</span>
+    [<span class="token-attribute">HttpPost</span>]
+    [<span class="token-attribute">Authorize</span>(Roles = <span class="token-string">"Admin,Teacher"</span>)]
+    <span class="token-keyword">public</span> <span class="token-type">IActionResult</span> <span class="token-function">CreateCourse</span>([<span class="token-attribute">FromBody</span>] <span class="token-type">string</span> courseName)
+    {
+        <span class="token-keyword">return</span> <span class="token-function">Ok</span>(<span class="token-keyword">new</span> { message = $<span class="token-string">"কোর্স '{courseName}' সফলভাবে তৈরি হয়েছে।"</span> });
+    }
+
+    <span class="token-comment">// ৩. কোর্স ডিলিট করতে পারবে শুধুমাত্র Admin</span>
+    [<span class="token-attribute">HttpDelete</span>(<span class="token-string">"{id}"</span>)]
+    [<span class="token-attribute">Authorize</span>(Roles = <span class="token-string">"Admin"</span>)]
+    <span class="token-keyword">public</span> <span class="token-type">IActionResult</span> <span class="token-function">DeleteCourse</span>(<span class="token-type">int</span> id)
+    {
+        <span class="token-keyword">return</span> <span class="token-function">Ok</span>(<span class="token-keyword">new</span> { message = $<span class="token-string">"কোর্স আইডি {id} ডিলিট করা হয়েছে।"</span> });
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- 6. Code line-by-line explanation -->
+      <h2 id="line-by-line">৬. কোডের লাইন-বাই-লাইন ব্যাখ্যা</h2>
+      <div class="breakdown-card">
+        <div class="breakdown-item">
+          <span class="breakdown-code">[Authorize]</span>
+          <span class="breakdown-desc">মেথডের ওপরে শুধু <code>[Authorize]</code> থাকলে রোল দেখা হয় না—টোকেন ভ্যালিড হলেই যে কেউ এক্সেস পাবে।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">[Authorize(Roles = "Admin,Teacher")]</span>
+          <span class="breakdown-desc">কমা দিয়ে একাধিক রোল দেওয়া হলে এটি <strong>OR</strong> কন্ডিশন হিসেবে কাজ করে। অর্থাৎ ইউজারের রোল <code>Admin</code> অথবা <code>Teacher</code> যেকোনো একটি হলেই সে কোর্স তৈরি করতে পারবে।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">[Authorize(Roles = "Admin")]</span>
+          <span class="breakdown-desc">কোর্স ডিলিট করার মতো ঝুঁকিপূর্ণ অপারেশনে কঠোরভাবে কেবল <code>Admin</code> রোলধারীদেরকেই ঢুকতে দেওয়া হচ্ছে। কোনো Teacher যদি এটা কল করে, সাথে সাথে <code>403 Forbidden</code> রেসপন্স পাবে।</span>
+        </div>
+      </div>
+
+      <!-- 7. Common mistakes -->
+      <h2 id="common-mistakes">৭. কমন ভুলগুলো (Common Mistakes)</h2>
+      <div class="callout callout-mistake">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          রোল অথরাইজেশনে যেসব ভুল সচরাচর হয়:
+        </div>
+        <div class="callout-body">
+          <ul style="margin-bottom:0;">
+            <li><strong>স্পেলিং ও কেস সেনসিটিভিটি ভুল:</strong> টোকেনে ক্লেইম দিয়েছো <code>"admin"</code> (স্মল লেটার), কিন্তু কন্ট্রোলারে লিখেছো <code>Roles = "Admin"</code> (ক্যাপিটাল লেটার)। সি-শার্পে বাই-ডিফল্ট এটি কেস-সেনসিটিভ হতে পারে, তাই রোল সবসময় কনসিস্টেন্ট কনস্ট্যান্ট স্ট্রিং আকারে রাখবে।</li>
+            <li><strong>ClaimTypes.Role ব্যবহার না করা:</strong> টোকেন বানানোর সময় ক্লেইম কি হিসেবে ইচ্ছামতো <code>"my_role"</code> না দিয়ে সবসময় স্ট্যান্ডার্ড <code>ClaimTypes.Role</code> ব্যবহার করবে। এতে .NET-এর বিল্ট-ইন <code>[Authorize(Roles = "...")]</code> কোনো অতিরিক্ত কনফিগার ছাড়াই স্বয়ংক্রিয়ভাবে রোল রিড করতে পারে।</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 8. Short summary -->
+      <h2 id="short-summary">৮. শর্ট সামারি (Short Summary)</h2>
+      <div class="callout callout-summary">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          মূল টেক-অ্যাওয়ে:
+        </div>
+        <div class="callout-body">
+          <p>১. <code>[Authorize(Roles = "Role1,Role2")]</code> দিয়ে খুব সহজেই রোল-বেজড গার্ড বসানো যায়।</p>
+          <p>২. রোল না মিললে সার্ভার <code>403 Forbidden</code> রেসপন্স প্রদান করে।</p>
+          <p>৩. ক্লেইমে রোল যুক্ত করার সময় স্ট্যান্ডার্ড <code>ClaimTypes.Role</code> ব্যবহার করা বেস্ট প্র্যাকটিস।</p>
+        </div>
+      </div>
+
+      <!-- Navigation Footer -->
+      <div class="docs-nav-footer">
+        <a href="token-generation.html" class="nav-card">
+          <span class="nav-card-label">&larr; পূর্ববর্তী চ্যাপ্টার</span>
+          <span class="nav-card-title">Token Generation ও Controller</span>
+        </a>
+        <a href="refresh-token.html" class="nav-card next">
+          <span class="nav-card-label">পরবর্তী চ্যাপ্টার &rarr;</span>
+          <span class="nav-card-title">Refresh Token Flow & Architecture &rarr;</span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <!-- Search Modal -->
+  <div class="search-modal-backdrop" id="searchModalBackdrop">
+    <div class="search-modal">
+      <div class="search-input-wrapper">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" placeholder="ডকুমেন্টেশনে সার্চ করুন (যেমন: JWT, Claims, Roles)..." autocomplete="off">
+      </div>
+      <div class="search-results" id="searchResults">
+        <!-- Injected via JavaScript -->
+      </div>
+      <div class="search-footer">
+        <span>ন্যাভিগেশনের জন্য <kbd>↑</kbd> <kbd>↓</kbd> ও সিলেক্ট করতে <kbd>Enter</kbd> চাপুন</span>
+        <span>বন্ধ করতে <kbd>Esc</kbd></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+</body>
+</html>

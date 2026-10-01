@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASP.NET Core Setup ও Middleware | JWT Auth Docs</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="top-header">
+    <div class="header-left">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a href="introduction.html" class="brand-logo">
+        <div class="brand-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <span>JWT Auth Docs</span>
+        <span class="brand-badge">.NET 8</span>
+      </a>
+    </div>
+
+    <div class="header-right">
+      <button class="search-btn" id="searchBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <span>টপিক সার্চ করুন...</span>
+        <span class="search-shortcut">Ctrl K</span>
+      </button>
+
+      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+        <!-- Sun/Moon icon injected by JS -->
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="docs-container">
+    <div class="sidebar-overlay"></div>
+
+    <!-- Left Sidebar -->
+    <aside class="docs-sidebar">
+      <div class="sidebar-group">
+        <div class="group-title">শুরুর কথা (Getting Started)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="introduction.html" class="sidebar-link">
+              <span>১. পরিচিতি ও ওভারভিউ</span>
+              <span class="sidebar-tag">Intro</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">কোর কনসেপ্টস (Core Concepts)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="authentication-vs-authorization.html" class="sidebar-link">
+              <span>২. AuthN vs AuthZ</span>
+              <span class="sidebar-tag">Core</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="jwt-structure.html" class="sidebar-link">
+              <span>৩. JWT Structure ও Claims</span>
+              <span class="sidebar-tag">JWT</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">ইমপ্লিমেন্টেশন (.NET Web API)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="aspnet-core-setup.html" class="sidebar-link active">
+              <span>৪. ASP.NET Core Setup</span>
+              <span class="sidebar-tag">API</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="token-generation.html" class="sidebar-link">
+              <span>৫. Token Generation</span>
+              <span class="sidebar-tag">C#</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="role-based-authorization.html" class="sidebar-link">
+              <span>৬. Role Authorization</span>
+              <span class="sidebar-tag">Security</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="refresh-token.html" class="sidebar-link">
+              <span>৭. Refresh Token Flow</span>
+              <span class="sidebar-tag">Auth</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="docs-content">
+      <nav class="breadcrumbs">
+        <a href="introduction.html">Docs</a>
+        <span class="separator">/</span>
+        <span>ইমপ্লিমেন্টেশন</span>
+        <span class="separator">/</span>
+        <span style="color: var(--text-primary);">ASP.NET Core Setup</span>
+      </nav>
+
+      <article class="article-header">
+        <h1 class="article-title">ASP.NET Core-এ JWT Setup ও Middleware</h1>
+        <div class="article-meta">
+          <div class="meta-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>পড়ার সময়: ৮ মিনিট</span>
+          </div>
+          <div class="meta-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>মডিউল: ০৪</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 1. এটা কী? -->
+      <h2 id="what-is-it">১. এটা কী? (What is this setup?)</h2>
+      <p>আমরা জানি ক্লায়েন্ট যখন কোনো রিকোয়েস্ট পাঠাবে, সে তার <code>Authorization: Bearer &lt;token&gt;</code> হেডার দিয়ে পাঠাবে। কিন্তু আমাদের ASP.NET Core অ্যাপ্লিকেশন কীভাবে বুঝবে যে টোকেনটি আসল নাকি নকল? কীভাবে সে অটোমেটিক টোকেনটিকে রিড করবে?</p>
+      <p>এজন্য .NET-এর <code>Program.cs</code> ফাইলে <strong>Authentication Service</strong> এবং <strong>Middleware</strong> কনফিগার করতে হয়।</p>
+
+      <!-- 2. কেন দরকার? -->
+      <h2 id="why-needed">২. কেন দরকার? (Why do we need it?)</h2>
+      <p>যদি আমরা এই কনফিগারেশন না করি, তাহলে প্রতিটা কন্ট্রোলার মেথডে আমাদের নিজ দায়িত্বে ম্যানুয়ালি হেডার থেকে টোকেন বের করে ডিকোড করতে হতো এবং Signature মেলাতে হতো, যা প্রচণ্ড সময়সাপেক্ষ এবং সিকিউরিটি বাগের কারণ হতে পারত।</p>
+      <p>ASP.NET Core-এর বিল্ট-ইন <strong>JwtBearer Middleware</strong> এই পুরো ভ্যালিডেশন প্রসেসটি ব্যাকগ্রাউন্ডে স্বয়ংক্রিয়ভাবে হ্যান্ডেল করে। ফলে কন্ট্রোলারের কাছে রিকোয়েস্ট আসার আগেই সে নিশ্চিত করে নেয় টোকেনটি শতভাগ ভ্যালিড।</p>
+
+      <!-- 3. এটা কীভাবে কাজ করে? -->
+      <h2 id="how-it-works">৩. এটা কীভাবে কাজ করে? (How does it work?)</h2>
+      <ol>
+        <li>ক্লায়েন্ট যখন কোনো সুরক্ষিত এন্ডপয়েন্টে রিকোয়েস্ট করে, রিকোয়েস্টটি প্রথমে ASP.NET Core-এর <strong>Middleware Pipeline</strong>-এ প্রবেশ করে।</li>
+        <li><code>app.UseAuthentication()</code> মিডলওয়্যার রিকোয়েস্ট হেডারের <code>Bearer</code> টোকেনটি খুঁজে বের করে।</li>
+        <li>সার্ভারের গোপন চাবি (Secret Key) এবং <code>TokenValidationParameters</code> মিলিয়ে দেখে টোকেনের স্বাক্ষর ঠিক আছে কি না এবং টোকেন এক্সপায়ার হয়েছে কি না।</li>
+        <li>যদি সবকিছু ভ্যালিড হয়, সে টোকেনের Claims-গুলো বের করে একটি <code>ClaimsPrincipal</code> অবজেক্ট বানিয়ে কন্ট্রোলারের <code>HttpContext.User</code>-এর মধ্যে সেট করে দেয়।</li>
+        <li>পরের ধাপে <code>app.UseAuthorization()</code> চেক করে দেখে কন্ট্রোলারের রুলস (যেমন: Role = Admin) ইউজারের সাথে মেলে কি না।</li>
+      </ol>
+
+      <!-- 4. বাস্তব জীবনের উদাহরণ -->
+      <h2 id="real-life-example">৪. বাস্তব জীবনের উদাহরণ (Real-Life Example)</h2>
+      <div class="callout callout-realworld">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          অফিসের অটোমেটিক সিকিউরিটি স্ক্যানার ও রিবন
+        </div>
+        <div class="callout-body">
+          <p>ধরো কোনো হাই-টেক সফটওয়্যার কোম্পানিতে ঢুকতে গেলে গেটে একটা <strong>অটোমেটিক কার্ড স্ক্যানার মেশিন</strong> বসানো থাকে। কর্মীরা কার্ড ছুঁইয়ে দিলেই মেশিন সাথে সাথে কার্ডের চিপ স্ক্যান করে দরজা খুলে দেয়। রুমের ভেতরের ম্যানেজারের কাছে কর্মীকে আলাদা করে প্রমাণ দিতে হয় না যে সে অনুমোদিত কি না—কারণ গেটের অটোমেটিক সিস্টেম আগেই তা ভেরিফাই করে দিয়েছে!</p>
+          <p>ASP.NET Core-এর <code>JwtBearer Middleware</code> হলো সেই ডিজিটাল অটোমেটিক গেট স্ক্যানার। সে কন্ট্রোলারে ঢোকার আগেই সব চেক করে পথ ক্লিয়ার করে দেয়।</p>
+        </div>
+      </div>
+
+      <!-- 5. Code example -->
+      <h2 id="code-example">৫. কোড এক্সাম্পল (Program.cs ও appsettings.json)</h2>
+      <p>প্রথমে আমাদের প্রয়োজন <code>Microsoft.AspNetCore.Authentication.JwtBearer</code> NuGet প্যাকেজটি ইনস্টল করা:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+            <span>Terminal (CLI)</span>
+          </div>
+          <button class="copy-code-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Copy Code</span>
+          </button>
+        </div>
+        <div class="code-content">
+<pre><code>dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer</code></pre>
+        </div>
+      </div>
+
+      <p>এবার <code>Program.cs</code> ফাইলে Dependency Injection ও Middleware কনফিগার করি:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>Program.cs (.NET 8)</span>
+          </div>
+          <button class="copy-code-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Copy Code</span>
+          </button>
+        </div>
+        <div class="code-content">
+<pre><code><span class="token-keyword">using</span> System.Text;
+<span class="token-keyword">using</span> Microsoft.AspNetCore.Authentication.JwtBearer;
+<span class="token-keyword">using</span> Microsoft.IdentityModel.Tokens;
+
+<span class="token-type">var</span> builder = WebApplication.<span class="token-function">CreateBuilder</span>(args);
+
+<span class="token-comment">// ১. Controllers সার্ভিস যুক্ত করা</span>
+builder.Services.<span class="token-function">AddControllers</span>();
+
+<span class="token-comment">// ২. appsettings.json থেকে JWT কনফিগারেশন রিড করা</span>
+<span class="token-type">var</span> jwtSettings = builder.Configuration.<span class="token-function">GetSection</span>(<span class="token-string">"JwtSettings"</span>);
+<span class="token-type">var</span> secretKey = jwtSettings[<span class="token-string">"SecretKey"</span>];
+
+<span class="token-comment">// ৩. Dependency Injection-এ Authentication সার্ভিস কনফিগার করা</span>
+builder.Services.<span class="token-function">AddAuthentication</span>(options =&gt;
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.<span class="token-function">AddJwtBearer</span>(options =&gt;
+{
+    options.TokenValidationParameters = <span class="token-keyword">new</span> <span class="token-function">TokenValidationParameters</span>
+    {
+        ValidateIssuer = <span class="token-keyword">true</span>,
+        ValidateAudience = <span class="token-keyword">true</span>,
+        ValidateLifetime = <span class="token-keyword">true</span>,
+        ValidateIssuerSigningKey = <span class="token-keyword">true</span>,
+        ValidIssuer = jwtSettings[<span class="token-string">"Issuer"</span>],
+        ValidAudience = jwtSettings[<span class="token-string">"Audience"</span>],
+        IssuerSigningKey = <span class="token-keyword">new</span> <span class="token-function">SymmetricSecurityKey</span>(Encoding.UTF8.<span class="token-function">GetBytes</span>(secretKey)),
+        ClockSkew = TimeSpan.Zero <span class="token-comment">// ডিফল্ট ৫ মিনিটের গ্রেস পিরিয়ড বাতিল করে তাৎক্ষণিক এক্সপায়ার নিশ্চিত করা</span>
+    };
+});
+
+<span class="token-type">var</span> app = builder.<span class="token-function">Build</span>();
+
+<span class="token-comment">// ৪. Middleware Pipeline সাজানো (অত্যন্ত গুরুত্বপূর্ণ সিরিয়াল!)</span>
+app.<span class="token-function">UseHttpsRedirection</span>();
+
+app.<span class="token-function">UseAuthentication</span>(); <span class="token-comment">// পরিচয় যাচাই (আগে থাকতে হবে)</span>
+app.<span class="token-function">UseAuthorization</span>();  <span class="token-comment">// পারমিশন যাচাই (পরে থাকতে হবে)</span>
+
+app.<span class="token-function">MapControllers</span>();
+
+app.<span class="token-function">Run</span>();</code></pre>
+        </div>
+      </div>
+
+      <!-- 6. Code line-by-line explanation -->
+      <h2 id="line-by-line">৬. কোডের লাইন-বাই-লাইন ব্যাখ্যা</h2>
+      <div class="breakdown-card">
+        <div class="breakdown-item">
+          <span class="breakdown-code">builder.Services.AddAuthentication(...)</span>
+          <span class="breakdown-desc">সিস্টেমে বলে দেওয়া হচ্ছে যে আমাদের অ্যাপ্লিকেশনের ডিফল্ট অথেনটিকেশন স্কিম হবে <strong>Bearer Token</strong>।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">options.TokenValidationParameters</span>
+          <span class="breakdown-desc">এখানে সার্ভারকে নিয়ম ঠিক করে দেওয়া হচ্ছে: ইনকামিং টোকেনের Issuer (কে পাঠাল), Audience (কার জন্য টোকেন) এবং Secret Key মিলিয়ে দেখতে হবে।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">ClockSkew = TimeSpan.Zero</span>
+          <span class="breakdown-desc">ডিফল্টভাবে .NET সার্ভারের টাইম সিঙ্ক সমস্যার কারণে টোকেনের মেয়াদের পরেও অতিরিক্ত ৫ মিনিট পর্যন্ত টোকেন ভ্যালিড রাখে। <code>ClockSkew = TimeSpan.Zero</code> দিলে টোকেনের মেয়াদ ১ সেকেন্ড শেষ হলেও সাথে সাথে ইনভ্যালিড ধরা হয়।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">app.UseAuthentication() & app.UseAuthorization()</span>
+          <span class="breakdown-desc">এইচটিটিপি পাইপলাইনে মিডলওয়্যার দুটি যুক্ত করা হলো। <code>UseAuthentication</code> আগে টোকেন থেকে পরিচয় বের করবে, তারপর <code>UseAuthorization</code> পারমিশন চেক করবে।</span>
+        </div>
+      </div>
+
+      <!-- 7. Common mistakes -->
+      <h2 id="common-mistakes">৭. কমন ভুলগুলো (Common Mistakes)</h2>
+      <div class="callout callout-mistake">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          Program.cs কনফিগারেশনে যেসব ভুল হয়:
+        </div>
+        <div class="callout-body">
+          <ul style="margin-bottom:0;">
+            <li><strong>UseAuthentication() ভুলে বাদ দেওয়া:</strong> নতুনরা প্রায়ই সার্ভিস অ্যাড করে (<code>AddAuthentication</code>), কিন্তু পাইপলাইনে <code>app.UseAuthentication()</code> লিখতে ভুলে যায়! ফলে টোকেন পাঠানো সত্ত্বেও কন্ট্রোলারে <code>401 Unauthorized</code> আসে।</li>
+            <li><strong>UseAuthorization-এর পরে UseAuthentication লেখা:</strong> পাইপলাইনের অর্ডার অত্যন্ত গুরুত্বপূর্ণ। যদি <code>app.UseAuthorization()</code> আগে লেখো, তবে সে ইউজারের আইডেন্টিটি পাওয়ার আগেই অথরাইজেশন চেক করে ফেলবে এবং ফেইল করবে।</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 8. Short summary -->
+      <h2 id="short-summary">৮. শর্ট সামারি (Short Summary)</h2>
+      <div class="callout callout-summary">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          মনে রাখার মূল বিষয়:
+        </div>
+        <div class="callout-body">
+          <p>১. NuGet প্যাকেজ <code>Microsoft.AspNetCore.Authentication.JwtBearer</code> ইনস্টল থাকতে হবে।</p>
+          <p>২. <code>TokenValidationParameters</code> দিয়ে Issuer, Audience, ও Secret Key ভ্যালিডেশন অ্যাক্টিভ করতে হয়।</p>
+          <p>৩. পাইপলাইনের স্বর্ণালী নিয়ম: <strong>UseAuthentication() আগে, UseAuthorization() পরে</strong>।</p>
+        </div>
+      </div>
+
+      <!-- Navigation Footer -->
+      <div class="docs-nav-footer">
+        <a href="jwt-structure.html" class="nav-card">
+          <span class="nav-card-label">&larr; পূর্ববর্তী চ্যাপ্টার</span>
+          <span class="nav-card-title">JWT Structure ও Claims Deep Dive</span>
+        </a>
+        <a href="token-generation.html" class="nav-card next">
+          <span class="nav-card-label">পরবর্তী চ্যাপ্টার &rarr;</span>
+          <span class="nav-card-title">Token Generation ও Controller</span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <!-- Search Modal -->
+  <div class="search-modal-backdrop" id="searchModalBackdrop">
+    <div class="search-modal">
+      <div class="search-input-wrapper">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" placeholder="ডকুমেন্টেশনে সার্চ করুন (যেমন: JWT, Claims, Roles)..." autocomplete="off">
+      </div>
+      <div class="search-results" id="searchResults">
+        <!-- Injected via JavaScript -->
+      </div>
+      <div class="search-footer">
+        <span>ন্যাভিগেশনের জন্য <kbd>↑</kbd> <kbd>↓</kbd> ও সিলেক্ট করতে <kbd>Enter</kbd> চাপুন</span>
+        <span>বন্ধ করতে <kbd>Esc</kbd></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+</body>
+</html>

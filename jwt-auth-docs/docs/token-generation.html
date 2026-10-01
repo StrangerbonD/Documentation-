@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Token Generation ও Controller | JWT Auth Docs</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="top-header">
+    <div class="header-left">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a href="introduction.html" class="brand-logo">
+        <div class="brand-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <span>JWT Auth Docs</span>
+        <span class="brand-badge">.NET 8</span>
+      </a>
+    </div>
+
+    <div class="header-right">
+      <button class="search-btn" id="searchBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <span>টপিক সার্চ করুন...</span>
+        <span class="search-shortcut">Ctrl K</span>
+      </button>
+
+      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+        <!-- Sun/Moon icon injected by JS -->
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="docs-container">
+    <div class="sidebar-overlay"></div>
+
+    <!-- Left Sidebar -->
+    <aside class="docs-sidebar">
+      <div class="sidebar-group">
+        <div class="group-title">শুরুর কথা (Getting Started)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="introduction.html" class="sidebar-link">
+              <span>১. পরিচিতি ও ওভারভিউ</span>
+              <span class="sidebar-tag">Intro</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">কোর কনসেপ্টস (Core Concepts)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="authentication-vs-authorization.html" class="sidebar-link">
+              <span>২. AuthN vs AuthZ</span>
+              <span class="sidebar-tag">Core</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="jwt-structure.html" class="sidebar-link">
+              <span>৩. JWT Structure ও Claims</span>
+              <span class="sidebar-tag">JWT</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="group-title">ইমপ্লিমেন্টেশন (.NET Web API)</div>
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="aspnet-core-setup.html" class="sidebar-link">
+              <span>৪. ASP.NET Core Setup</span>
+              <span class="sidebar-tag">API</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="token-generation.html" class="sidebar-link active">
+              <span>৫. Token Generation</span>
+              <span class="sidebar-tag">C#</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="role-based-authorization.html" class="sidebar-link">
+              <span>৬. Role Authorization</span>
+              <span class="sidebar-tag">Security</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="refresh-token.html" class="sidebar-link">
+              <span>৭. Refresh Token Flow</span>
+              <span class="sidebar-tag">Auth</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="docs-content">
+      <nav class="breadcrumbs">
+        <a href="introduction.html">Docs</a>
+        <span class="separator">/</span>
+        <span>ইমপ্লিমেন্টেশন</span>
+        <span class="separator">/</span>
+        <span style="color: var(--text-primary);">Token Generation</span>
+      </nav>
+
+      <article class="article-header">
+        <h1 class="article-title">Login Controller ও Token Generation</h1>
+        <div class="article-meta">
+          <div class="meta-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>পড়ার সময়: ৬ মিনিট</span>
+          </div>
+          <div class="meta-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>মডিউল: ০৫</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 1. এটা কী? -->
+      <h2 id="what-is-it">১. এটা কী? (What is this?)</h2>
+      <p>এটি হলো আমাদের অথেনটিকেশন আর্কিটেকচারের <strong>প্রবেশদ্বার (Entrypoint)</strong>। যখন একজন ইউজার ফ্রন্টএন্ডে তার ইমেইল আর পাসওয়ার্ড টাইপ করে "Login" বাটনে ক্লিক করে, তখন ব্যাকএন্ডের এই কন্ট্রোলার মেথডটি তার ডাটা রিসিভ করে, পাসওয়ার্ড যাচাই করে এবং নতুন একটি JWT Access Token রিটার্ন করে।</p>
+
+      <!-- 2. কেন দরকার? -->
+      <h2 id="why-needed">২. কেন দরকার? (Why do we need it?)</h2>
+      <p>সিস্টেমকে জানতে হবে ইউজার আসল কি না। সরাসরি ডেটাবেস ওপেন করে রাখা যায় না। তাই একটি সুরক্ষিত কন্ট্রোলার এন্ডপয়েন্ট (যেমন <code>POST /api/auth/login</code>) এবং একটি সুনির্দিষ্ট <strong>DTO (Data Transfer Object)</strong> দরকার, যা ক্লায়েন্ট থেকে আসা ইনপুট ভ্যালিডেট করবে এবং টোকেন তৈরি করবে।</p>
+
+      <!-- 3. এটা কীভাবে কাজ করে? -->
+      <h2 id="how-it-works">৩. এটা কীভাবে কাজ করে? (How does it work?)</h2>
+      <ol>
+        <li>ক্লায়েন্ট <code>LoginDto</code> আকারে <code>Email</code> ও <code>Password</code> পাঠায়।</li>
+        <li>কন্ট্রোলার ডেটাবেসে গিয়ে দেখে এই ইমেইল দিয়ে কোনো ইউজার আছে কি না। না থাকলে <code>401 Unauthorized</code> রিটার্ন করে।</li>
+        <li>যদি ইউজার পাওয়া যায়, তাহলে <strong>BCrypt</strong> বা হ্যাশিং অ্যালগরিদম দিয়ে চেক করা হয় ক্লায়েন্টের পাসওয়ার্ড আর ডেটাবেসের Password Hash মেলে কি না।</li>
+        <li>পাসওয়ার্ড ম্যাচ করলে <code>JwtTokenService</code> কল করে টোকেন জেনারেট করে ক্লায়েন্টকে <code>200 OK</code> রেসপন্সে টোকেনটি পাঠানো হয়।</li>
+      </ol>
+
+      <!-- 4. বাস্তব জীবনের উদাহরণ -->
+      <h2 id="real-life-example">৪. বাস্তব জীবনের উদাহরণ (Real-Life Example)</h2>
+      <div class="callout callout-realworld">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+          ব্যাংকের টোকেন কাউন্টার
+        </div>
+        <div class="callout-body">
+          <p>তুমি ব্যাংকে টাকা তুলতে গিয়ে ক্যাশ কাউন্টারে যাওয়ার আগে রিসিপশনে তোমার চেকবই বা একাউন্ট নম্বর দেখালে। ব্যাংক অফিসার একাউন্ট মিলিয়ে দেখে তোমাকে একটি <strong>টোকেন নম্বর স্লিপ</strong> ধরিয়ে দিল। এরপর বাকি সমস্ত টেবিলে তুমি কেবল সেই টোকেন স্লিপ দেখিয়েই সার্ভিস পাবে, তোমাকে বারবার পুরো ফাইল বা এনআইডি দেখাতে হবে না!</p>
+          <p>Login Controller হলো সেই রিসিপশন কাউন্টার, যে প্রথমবার ইউজারকে চেক করে একটি গোল্ডেন টোকেন স্লিপ ধরিয়ে দেয়।</p>
+        </div>
+      </div>
+
+      <!-- 5. Code example -->
+      <h2 id="code-example">৫. কোড এক্সাম্পল (DTO ও Controller)</h2>
+      <p>নিচে পরিষ্কার DTO এবং কন্ট্রোলার কোড দেওয়া হলো:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-lang-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>Controllers/AuthController.cs</span>
+          </div>
+          <button class="copy-code-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Copy Code</span>
+          </button>
+        </div>
+        <div class="code-content">
+<pre><code><span class="token-keyword">using</span> Microsoft.AspNetCore.Mvc;
+
+<span class="token-comment">// ১. Login Request এর জন্য DTO</span>
+<span class="token-keyword">public class</span> <span class="token-type">LoginDto</span>
+{
+    <span class="token-keyword">public string</span> Email { <span class="token-keyword">get</span>; <span class="token-keyword">set</span>; } = <span class="token-keyword">string</span>.Empty;
+    <span class="token-keyword">public string</span> Password { <span class="token-keyword">get</span>; <span class="token-keyword">set</span>; } = <span class="token-keyword">string</span>.Empty;
+}
+
+[<span class="token-attribute">ApiController</span>]
+[<span class="token-attribute">Route</span>(<span class="token-string">"api/[controller]"</span>)]
+<span class="token-keyword">public class</span> <span class="token-type">AuthController</span> : <span class="token-type">ControllerBase</span>
+{
+    <span class="token-keyword">private readonly</span> <span class="token-type">IUserService</span> _userService;
+    <span class="token-keyword">private readonly</span> <span class="token-type">JwtTokenService</span> _jwtTokenService;
+
+    <span class="token-keyword">public</span> <span class="token-function">AuthController</span>(<span class="token-type">IUserService</span> userService, <span class="token-type">JwtTokenService</span> jwtTokenService)
+    {
+        _userService = userService;
+        _jwtTokenService = jwtTokenService;
+    }
+
+    [<span class="token-attribute">HttpPost</span>(<span class="token-string">"login"</span>)]
+    <span class="token-keyword">public async</span> <span class="token-type">Task</span>&lt;<span class="token-type">IActionResult</span>&gt; <span class="token-function">Login</span>([<span class="token-attribute">FromBody</span>] <span class="token-type">LoginDto</span> dto)
+    {
+        <span class="token-comment">// ১. ইউজার খুঁজে দেখা</span>
+        <span class="token-type">var</span> user = <span class="token-keyword">await</span> _userService.<span class="token-function">GetByEmailAsync</span>(dto.Email);
+        <span class="token-keyword">if</span> (user == <span class="token-keyword">null</span>)
+        {
+            <span class="token-keyword">return</span> <span class="token-function">Unauthorized</span>(<span class="token-keyword">new</span> { message = <span class="token-string">"ভুল ইমেইল বা পাসওয়ার্ড!"</span> });
+        }
+
+        <span class="token-comment">// ২. Password Hashing ভেরিফাই করা (BCrypt)</span>
+        <span class="token-type">bool</span> isPasswordValid = BCrypt.Net.BCrypt.<span class="token-function">Verify</span>(dto.Password, user.PasswordHash);
+        <span class="token-keyword">if</span> (!isPasswordValid)
+        {
+            <span class="token-keyword">return</span> <span class="token-function">Unauthorized</span>(<span class="token-keyword">new</span> { message = <span class="token-string">"ভুল ইমেইল বা পাসওয়ার্ড!"</span> });
+        }
+
+        <span class="token-comment">// ৩. JWT Token তৈরি করে রেসপন্স পাঠানো</span>
+        <span class="token-type">var</span> token = _jwtTokenService.<span class="token-function">GenerateToken</span>(user);
+
+        <span class="token-keyword">return</span> <span class="token-function">Ok</span>(<span class="token-keyword">new</span>
+        {
+            accessToken = token,
+            tokenType = <span class="token-string">"Bearer"</span>,
+            expiresIn = <span class="token-number">7200</span> <span class="token-comment">// ২ ঘণ্টা (সেকেন্ডে)</span>
+        });
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- 6. Code line-by-line explanation -->
+      <h2 id="line-by-line">৬. কোডের লাইন-বাই-লাইন ব্যাখ্যা</h2>
+      <div class="breakdown-card">
+        <div class="breakdown-item">
+          <span class="breakdown-code">public class LoginDto</span>
+          <span class="breakdown-desc">সরাসরি ডেটাবেসের User Entity ব্যবহার না করে সবসময় DTO ব্যবহার করা ভালো অভ্যাস। এতে শুধু যে ফিল্ডগুলো প্রয়োজন (Email, Password) কেবল সেগুলোই ক্লায়েন্ট থেকে আসে।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">BCrypt.Net.BCrypt.Verify(...)</span>
+          <span class="breakdown-desc">ইউজারের পাঠানো প্লেইনটেক্সট পাসওয়ার্ড এবং ডেটাবেসের হ্যাশ মিলিয়ে দেখছে। মনে রাখবে, ডেটাবেসে পাসওয়ার্ড কখনো প্লেইনটেক্সটে রাখা যাবে না।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">return Unauthorized(new { message = "..." })</span>
+          <span class="breakdown-desc">ইমেইল না মিললেও বা পাসওয়ার্ড না মিললেও একই জেনেরিক মেসেজ দেওয়া হচ্ছে: "ভুল ইমেইল বা পাসওয়ার্ড"। আলাদা করে "ইমেইল পাওয়া যায়নি" বললে হ্যাকাররা সিস্টেমের ভ্যালিড ইমেইল লিস্ট তৈরি করার সুযোগ পায় (User Enumeration Attack)।</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="breakdown-code">return Ok(new { accessToken = token, ... })</span>
+          <span class="breakdown-desc">সফলভাবে তৈরি হওয়া টোকেনটি ক্লায়েন্টকে পাঠানো হচ্ছে। ক্লায়েন্ট এটি লোকালস্টোরেজ বা মেমোরিতে সংরক্ষণ করে পরবর্তী সব রিকোয়েস্টে পাঠাবে।</span>
+        </div>
+      </div>
+
+      <!-- 7. Common mistakes -->
+      <h2 id="common-mistakes">৭. কমন ভুলগুলো (Common Mistakes)</h2>
+      <div class="callout callout-mistake">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          কন্ট্রোলারে লগইন হ্যান্ডলিং করার সময় ভুল:
+        </div>
+        <div class="callout-body">
+          <ul style="margin-bottom:0;">
+            <li><strong>সরাসরি string সমান সমান (==) দিয়ে পাসওয়ার্ড চেক করা:</strong> কখনোই <code>user.Password == dto.Password</code> করবে না! এটি চরম বিপজ্জনক। পাসওয়ার্ড অবশ্যই সল্টসহ ক্রিপ্টোগ্রাফিক হ্যাশিং (যেমন: BCrypt/Argon2) দিয়ে ভেরিফাই করতে হবে।</li>
+            <li><strong>লগইন রেসপন্সে পুরো User অবজেক্ট পাঠিয়ে দেওয়া:</strong> অনেকেই ভুল করে <code>return Ok(new { user = user, token = token })</code> দেয়, যাতে ইউজারের <code>PasswordHash</code> ফিল্ড পর্যন্ত ফ্রন্টএন্ডে এক্সপোজ হয়ে যায়! রেসপন্সে শুধু টোকেন আর প্রয়োজনীয় পাবলিক ফিল্ড দেবে।</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 8. Short summary -->
+      <h2 id="short-summary">৮. শর্ট সামারি (Short Summary)</h2>
+      <div class="callout callout-summary">
+        <div class="callout-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          মূল কথা:
+        </div>
+        <div class="callout-body">
+          <p>১. Login Controller হলো ইউজারের পরিচয় নিশ্চিত করার গেটওয়ে।</p>
+          <p>২. ইনপুটের জন্য <code>LoginDto</code> এবং পাসওয়ার্ড যাচাইয়ের জন্য <code>BCrypt.Verify</code> ব্যবহার করতে হবে।</p>
+          <p>৩. সফল লগইনে তৈরি হওয়া টোকেন <code>accessToken</code> প্রোপার্টিতে ক্লায়েন্টকে দিতে হবে।</p>
+        </div>
+      </div>
+
+      <!-- Navigation Footer -->
+      <div class="docs-nav-footer">
+        <a href="aspnet-core-setup.html" class="nav-card">
+          <span class="nav-card-label">&larr; পূর্ববর্তী চ্যাপ্টার</span>
+          <span class="nav-card-title">ASP.NET Core Setup ও Middleware</span>
+        </a>
+        <a href="role-based-authorization.html" class="nav-card next">
+          <span class="nav-card-label">পরবর্তী চ্যাপ্টার &rarr;</span>
+          <span class="nav-card-title">Role-based Authorization &rarr;</span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <!-- Search Modal -->
+  <div class="search-modal-backdrop" id="searchModalBackdrop">
+    <div class="search-modal">
+      <div class="search-input-wrapper">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" placeholder="ডকুমেন্টেশনে সার্চ করুন (যেমন: JWT, Claims, Roles)..." autocomplete="off">
+      </div>
+      <div class="search-results" id="searchResults">
+        <!-- Injected via JavaScript -->
+      </div>
+      <div class="search-footer">
+        <span>ন্যাভিগেশনের জন্য <kbd>↑</kbd> <kbd>↓</kbd> ও সিলেক্ট করতে <kbd>Enter</kbd> চাপুন</span>
+        <span>বন্ধ করতে <kbd>Esc</kbd></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+</body>
+</html>
